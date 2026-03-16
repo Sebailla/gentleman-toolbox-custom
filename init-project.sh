@@ -60,7 +60,8 @@ if [ -d "$TOOLBOX_DIR/.git" ]; then
         elif [ "$ORIGIN_REMOTE" = "$ORIGIN_BASE" ]; then
             log_warn "Tenés cambios locales no pusheados a tu repo personal (origin)."
         else
-            log_error "Conflicto con tu repo personal en $TOOLBOX_DIR"
+            log_warn "Tu historial ha divergido de 'origin' (probablemente por el rebase de Alan)."
+            log_info "Sugerencia: Revisá los cambios y tirá un 'git push --force origin main' para sincronizar tu repo."
         fi
     fi
     popd > /dev/null
@@ -78,6 +79,7 @@ git init -q
 # 4. Crear Next.js App (Gentleman Stack)
 log_info "Lanzando create-next-app (Next.js latest, TS, Tailwind v4, App Router)..."
 # Usamos --no-install para controlar nosotros las dependencias
+# Usamos --yes para evitar promts interactivos (ej: React Compiler)
 bunx create-next-app@latest . \
     --typescript \
     --tailwind \
@@ -86,7 +88,8 @@ bunx create-next-app@latest . \
     --src-dir \
     --import-alias "@/*" \
     --use-bun \
-    --no-install
+    --skip-install \
+    --yes
 
 # 5. Instalar dependencias core del stack
 log_info "Instalando dependencias del Gentleman Stack..."
