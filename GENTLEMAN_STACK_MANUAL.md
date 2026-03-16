@@ -205,6 +205,12 @@ cp -r ~/.config/opencode/skills/* .agent/skills/
 gentle-ai install --agent opencode --preset full-gentleman
 ```
 
+### Gestión de MCP (Model Context Protocol)
+Los MCPs permiten que la IA use herramientas externas (Notion, GitHub, etc.).
+- **Comando**: `opencode mcp add` (Sigue las instrucciones en pantalla).
+- **Lista**: `opencode mcp ls` (Verifica conexiones).
+- **Configuración Manual**: Editá el archivo `~/.config/opencode/opencode.json` en la sección `"mcp"`.
+
 ### Base de Datos (Prisma)
 ```bash
 # Sincroniza cambios en el schema.prisma con tu DB local
