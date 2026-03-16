@@ -134,7 +134,22 @@ Si decidís cambiar de cerebro, aquí tenés los IDs para el campo `PROVIDER`:
 
 ---
 
-## 6. Generación de Nuevos Skills (Fábrica de Inteligencia)
+## 6. 🛠️ Personalización (Agregar Skills)
+
+Podés expandir la inteligencia del stack agregando tus propios "chips" de conocimiento.
+
+### ¿Cómo crear un Skill?
+1. **Definir el objetivo**: Creá una carpeta en `~/.config/opencode/skills/` (para que sea global) o en `.agent/skills/` (solo para el proyecto).
+2. **Crear `SKILL.md`**: Usar el frontmatter obligatorio (name, description, trigger).
+3. **Reglas y Ejemplos**: Escribí las reglas que la IA **debe** seguir y ejemplos de código real.
+
+### Comandos de Expansión
+- Para crear uno rápidamente, pedíle a la IA: `"Crea un skill para [Tecnología] siguiendo el estándar skill-creator"`.
+- Los skills globales en `~/.config/opencode/skills/` se inyectarán automáticamente en cada `init-project.sh`.
+
+---
+
+## 7. Generación de Nuevos Skills (Fábrica de Inteligencia)
 
 Si necesitás que el agente aprenda un patrón nuevo o una tecnología específica, usá el **`skill-creator`**.
 
@@ -149,7 +164,7 @@ En tu chat de OpenCode, simplemente pedilo:
 
 ---
 
-## 7. Mantenimiento y Comandos Útiles
+## 8. Mantenimiento y Comandos Útiles
 
 Si sentís que el agente está "perdido" o se olvidó de los skills:
 
@@ -176,7 +191,7 @@ bunx prisma studio
 
 ---
 
-## 📜 8. Filosofía del Gentleman
+## 📜 9. Filosofía del Gentleman
 - **CONCEPTS > CODE**: Entendé por qué usás Atomic Design antes de crear un átomo.
 - **SOLID FOUNDATIONS**: La arquitectura es la que aguanta el peso del proyecto a largo plazo.
 - **AI IS A TOOL**: Vos sos Tony Stark. Vos decidís la arquitectura, la IA es el brazo que ejecuta.
