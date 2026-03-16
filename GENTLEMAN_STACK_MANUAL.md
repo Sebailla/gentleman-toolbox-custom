@@ -58,7 +58,32 @@ Cuando lanzás un comando `/sdd-*`, la IA utiliza el protocolo **MCP (Model Cont
 
 ---
 
-## 😇 3. El Guardian Angel (GGA)
+## 🧰 4. Catálogo de Skills (Toolbox)
+
+Los **Skills** son archivos de inteligencia modular que Antigravity carga dinámicamente según la tarea que le pidas. Aquí tenés el inventario de lo que tenés instalado en tu búnker:
+
+### A. Core SDD (El Motor de Trabajo)
+Estas capacidades permiten el flujo de **Spec-Driven Development**.
+- **`sdd-init` / `sdd-explore`**: Inicialización del contexto y escaneo de código existente.
+- **`sdd-propose` / `sdd-spec`**: Generación de propuestas técnicas y especificaciones de tests.
+- **`sdd-design` / `sdd-tasks`**: Diseño de arquitectura de archivos y desglose en tareas atómicas.
+- **`sdd-apply` / `sdd-verify`**: Implementación de código y validación automatizada de resultados.
+- **`sdd-archive`**: Limpieza de planos y guardado de conocimiento en **Engram**.
+
+### B. Infraestructura y Fábrica
+- **`skill-creator`**: Skill maestro diseñado para crear *otros* skills siguiendo el estándar.
+- **`skill-registry`**: El bibliotecario. Escanea todos tus skills (globales y locales) y prepara el mapa de herramientas para la IA.
+
+### C. Especialidades Técnicas
+- **`go-testing`**: Experto en el ecosistema Go. Genera mocks, corre tests y verifica la cobertura de código.
+
+### D. Operaciones y Calidad
+- **`branch-pr`**: Automatiza la creación de ramas y Pull Requests siguiendo convenciones.
+- **`issue-creation`**: Transforma bugs o requerimientos en Issues de GitHub bien documentados.
+
+---
+
+## 😇 5. El Guardian Angel (GGA)
 
 El Angel es tu mentor. No te deja hacer commits con código basura.
 
@@ -80,7 +105,7 @@ gga run
 **Si falla (STATUS: FAILED):** Arreglá lo que te pide. No intentes engañarlo, él sabe lo que es el buen código.
 **Si pasa (STATUS: PASSED):** Ya podés hacer el commit tranquilo.
 
-## 🩹 3.5. ¿Qué hacer si el Angel tira un FAILED?
+## 🩹 5.5. ¿Qué hacer si el Angel tira un FAILED?
 
 Si el Guardian Angel te da un veredicto de **FAILED**, usá al agente para redimir el código. No lo hagas a mano si podés automatizarlo.
 
@@ -96,24 +121,24 @@ Copiá el reporte de errores y pegalo en el chat de OpenCode con este comando:
 
 ---
 
-## 4. Solución de Problemas (Troubleshooting)
+## 6. Solución de Problemas (Troubleshooting)
 
 Aquí tenés los problemas que resolvimos "a los hachazos" hoy. Si te pasa de nuevo, tirá de manual:
 
-### 4.1. Error de versión de Tcl (have 9.0.0, need 8.5)
+### 6.1. Error de versión de Tcl (have 9.0.0, need 8.5)
 Si al usar `gga` te tira un conflicto de versión de Tcl, corré esto:
 ```bash
 brew unlink tcl-tk && brew install tcl-tk@8 && brew link --force tcl-tk@8
 ```
 
-### 4.2. Model Not Found (OpenCode)
+### 6.2. Model Not Found (OpenCode)
 Si OpenCode dice que no encuentra el modelo, verificá el ID exacto en el `.gga`.
 **Formatos aceptados:**
 - `PROVIDER="opencode"` (Usa el modelo por defecto de tu CLI).
 - `PROVIDER="opencode:minimax/minimax-m2.5"` (Formato `vendor/modelo`).
 - `PROVIDER="opencode:minimax-m2.5"` (ID de modelo plano).
 
-### 4.3. Los Skills no aparecen en el IDE
+### 6.3. Los Skills no aparecen en el IDE
 Si el agente no te responde a comandos de `/sdd-...`, es que los skills no llegaron a la carpeta del proyecto.
 ```bash
 cp -r ~/.config/opencode/skills/* .agent/skills/
@@ -121,7 +146,7 @@ cp -r ~/.config/opencode/skills/* .agent/skills/
 
 ---
 
-## 5. Tabla de Providers (Archivo .gga)
+## 7. Tabla de Providers (Archivo .gga)
 Si decidís cambiar de cerebro, aquí tenés los IDs para el campo `PROVIDER`:
 
 | Servicio | String en .gga | Notas |
@@ -134,7 +159,7 @@ Si decidís cambiar de cerebro, aquí tenés los IDs para el campo `PROVIDER`:
 
 ---
 
-## 6. 🛠️ Personalización (Agregar Skills)
+## 8. 🛠️ Personalización (Agregar Skills)
 
 Podés expandir la inteligencia del stack agregando tus propios "chips" de conocimiento.
 
@@ -149,7 +174,7 @@ Podés expandir la inteligencia del stack agregando tus propios "chips" de conoc
 
 ---
 
-## 7. Generación de Nuevos Skills (Fábrica de Inteligencia)
+## 9. Generación de Nuevos Skills (Fábrica de Inteligencia)
 
 Si necesitás que el agente aprenda un patrón nuevo o una tecnología específica, usá el **`skill-creator`**.
 
@@ -164,7 +189,7 @@ En tu chat de OpenCode, simplemente pedilo:
 
 ---
 
-## 8. Mantenimiento y Comandos Útiles
+## 10. Mantenimiento y Comandos Útiles
 
 Si sentís que el agente está "perdido" o se olvidó de los skills:
 
@@ -191,7 +216,7 @@ bunx prisma studio
 
 ---
 
-## 📜 9. Filosofía del Gentleman
+## 📜 11. Filosofía del Gentleman
 - **CONCEPTS > CODE**: Entendé por qué usás Atomic Design antes de crear un átomo.
 - **SOLID FOUNDATIONS**: La arquitectura es la que aguanta el peso del proyecto a largo plazo.
 - **AI IS A TOOL**: Vos sos Tony Stark. Vos decidís la arquitectura, la IA es el brazo que ejecuta.
