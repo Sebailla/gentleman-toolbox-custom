@@ -20,14 +20,14 @@ Aunque el script hace casi todo por vos, para que el stack quede **TOTALMENTE CO
 ### 1. Instalar dependencias bloqueadas
 El script las descarga, pero siempre es bueno asegurar que el árbol esté limpio:
 ```bash
-npm install
+bun install
 ```
 
 ### 2. Configurar Base de Datos
 Personalizá tu archivo `.env` con la URL de tu base de datos (PostgreSQL por defecto) y sincronizá Prisma:
 ```bash
 # Edita el .env primero, luego:
-npx prisma db push
+bunx prisma db push
 ```
 
 ### 3. Verificar el Guardian Angel (GGA)

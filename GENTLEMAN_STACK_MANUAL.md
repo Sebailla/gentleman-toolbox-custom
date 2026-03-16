@@ -148,10 +148,10 @@ gentle-ai install --agent opencode --preset full-gentleman
 ### Base de Datos (Prisma)
 ```bash
 # Sincroniza cambios en el schema.prisma con tu DB local
-npx prisma db push
+bunx prisma db push
 
 # Abre el visor de datos para ver qué hay en las tablas
-npx prisma studio
+bunx prisma studio
 ```
 
 ---
