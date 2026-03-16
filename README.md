@@ -2,8 +2,13 @@
 
 Este es tu centro de comando para nuevos proyectos. Basado en el ecosistema **Gentle AI**, diseñado para automatizar el **Gentleman Stack**.
 
-## 🚀 Paso 1: Inicialización
-Cada vez que quieras empezar algo nuevo con todo el stack (Next.js 15+, Prisma 7, Tailwind v4, Guardian Angel, etc), corré el script maestro:
+### 🛠️ Control de Versiones (Remotes)
+Este búnker está configurado para recibir lo último de Alan pero guardar tus cambios localmente:
+- **`origin`**: Tu repositorio personal (`gentleman-toolbox-custom`).
+- **`upstream`**: El repositorio original de Alan (`gentle-ai`).
+
+### 🚀 Paso 1: Inicialización & Auto-Update
+Cada vez que quieras empezar algo nuevo con todo el stack, corré el script maestro. El script **verificará automáticamente** si Alan subió algo nuevo al `upstream` y te informará antes de crear el proyecto:
 
 ```bash
 /Users/sebailla/Documents/Proyectos/gentleman-toolbox/init-project.sh nombre-del-proyecto
