@@ -39,7 +39,7 @@ func PostInstallMessages() []string {
 }
 
 // ProviderForAgents auto-detects the GGA provider based on selected agents.
-// Priority: claude > opencode > gemini > claude (default).
+// Priority: opencode > claude > gemini > opencode (default).
 func ProviderForAgents(agentIDs []model.AgentID) string {
 	has := make(map[model.AgentID]bool, len(agentIDs))
 	for _, id := range agentIDs {
@@ -47,14 +47,14 @@ func ProviderForAgents(agentIDs []model.AgentID) string {
 	}
 
 	switch {
-	case has[model.AgentClaudeCode]:
-		return "claude"
 	case has[model.AgentOpenCode]:
 		return "opencode"
+	case has[model.AgentClaudeCode]:
+		return "claude"
 	case has[model.AgentGeminiCLI]:
 		return "gemini"
 	default:
-		return "claude"
+		return "opencode"
 	}
 }
 

@@ -31,9 +31,9 @@ func TestProviderForAgents(t *testing.T) {
 			want:   "gemini",
 		},
 		{
-			name:   "both claude and opencode defaults to claude",
+			name:   "both claude and opencode defaults to opencode",
 			agents: []model.AgentID{model.AgentClaudeCode, model.AgentOpenCode},
-			want:   "claude",
+			want:   "opencode",
 		},
 		{
 			name:   "opencode and gemini defaults to opencode",
@@ -41,19 +41,19 @@ func TestProviderForAgents(t *testing.T) {
 			want:   "opencode",
 		},
 		{
-			name:   "empty agents defaults to claude",
+			name:   "empty agents defaults to opencode",
 			agents: []model.AgentID{},
-			want:   "claude",
+			want:   "opencode",
 		},
 		{
-			name:   "nil agents defaults to claude",
+			name:   "nil agents defaults to opencode",
 			agents: nil,
-			want:   "claude",
+			want:   "opencode",
 		},
 		{
-			name:   "cursor only defaults to claude",
+			name:   "cursor only defaults to opencode",
 			agents: []model.AgentID{model.AgentCursor},
-			want:   "claude",
+			want:   "opencode",
 		},
 	}
 
