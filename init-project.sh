@@ -31,20 +31,20 @@ if [ -d "$TOOLBOX_DIR/.git" ]; then
     log_info "Verificando actualizaciones del Toolbox..."
     # Guardamos el dir actual para volver después del check
     pushd "$TOOLBOX_DIR" > /dev/null
-    git fetch -q origin main
+    git fetch -q upstream main
     
-    UPSTREAM=${1:-'@{u}'}
+    UPSTREAM="upstream/main"
     LOCAL=$(git rev-parse @)
     REMOTE=$(git rev-parse "$UPSTREAM")
     BASE=$(git merge-base @ "$UPSTREAM")
 
     if [ "$LOCAL" = "$REMOTE" ]; then
-        log_success "Toolbox actualizado."
+        log_success "Toolbox actualizado con lo último de Alan."
     elif [ "$LOCAL" = "$BASE" ]; then
-        log_info "Se encontraron cambios nuevos en el repositorio remoto. Actualizando..."
+        log_info "Se encontraron cambios nuevos en Upstream (Alan). Actualizando..."
         echo -e "${CYAN}Cambios detectados:${NC}"
-        git log ..origin/main --oneline -n 10
-        git pull --rebase -q origin main
+        git log ..upstream/main --oneline -n 10
+        git pull --rebase -q upstream main
         log_success "Toolbox actualizado con éxito."
     elif [ "$REMOTE" = "$BASE" ]; then
         log_info "Tenés cambios locales no pusheados. Continuando..."
