@@ -31,25 +31,37 @@ if [ -d "$TOOLBOX_DIR/.git" ]; then
     log_info "Verificando actualizaciones del Toolbox..."
     # Guardamos el dir actual para volver después del check
     pushd "$TOOLBOX_DIR" > /dev/null
-    git fetch -q upstream main
+    git fetch -q origin main 2>/dev/null
+    git fetch -q upstream main 2>/dev/null
     
-    UPSTREAM="upstream/main"
-    LOCAL=$(git rev-parse @)
-    REMOTE=$(git rev-parse "$UPSTREAM")
-    BASE=$(git merge-base @ "$UPSTREAM")
-
-    if [ "$LOCAL" = "$REMOTE" ]; then
-        log_success "Toolbox actualizado con lo último de Alan."
-    elif [ "$LOCAL" = "$BASE" ]; then
+    LOCAL=$(git rev-parse HEAD)
+    ORIGIN_REMOTE=$(git rev-parse origin/main 2>/dev/null || echo "$LOCAL")
+    UPSTREAM_REMOTE=$(git rev-parse upstream/main 2>/dev/null || echo "$LOCAL")
+    
+    # 1. Verificar si hay novedades de Alan (Upstream)
+    UPSTREAM_BASE=$(git merge-base HEAD "$UPSTREAM_REMOTE" 2>/dev/null || echo "$LOCAL")
+    if [ "$LOCAL" != "$UPSTREAM_REMOTE" ] && [ "$UPSTREAM_BASE" != "$UPSTREAM_REMOTE" ]; then
         log_info "Se encontraron cambios nuevos en Upstream (Alan). Actualizando..."
         echo -e "${CYAN}Cambios detectados:${NC}"
-        git log ..upstream/main --oneline -n 10
+        git log HEAD..upstream/main --oneline -n 10
         git pull --rebase -q upstream main
-        log_success "Toolbox actualizado con éxito."
-    elif [ "$REMOTE" = "$BASE" ]; then
-        log_info "Tenés cambios locales no pusheados. Continuando..."
+        log_success "Toolbox actualizado con lo último de Alan."
+        LOCAL=$(git rev-parse HEAD) # Actualizar LOCAL después del rebase
+    fi
+
+    # 2. Verificar estado con tu repo personal (Origin)
+    if [ "$LOCAL" = "$ORIGIN_REMOTE" ]; then
+        log_success "Toolbox sincronizado con tu repo personal."
     else
-        log_error "El repositorio ha divergido. Por favor, resolvé los conflictos manualmente en $TOOLBOX_DIR"
+        ORIGIN_BASE=$(git merge-base HEAD "$ORIGIN_REMOTE" 2>/dev/null || echo "$LOCAL")
+        if [ "$LOCAL" = "$ORIGIN_BASE" ]; then
+            log_info "Tu repo local está atrasado respecto a tu origin. Actualizando..."
+            git pull -q origin main
+        elif [ "$ORIGIN_REMOTE" = "$ORIGIN_BASE" ]; then
+            log_warn "Tenés cambios locales no pusheados a tu repo personal (origin)."
+        else
+            log_error "Conflicto con tu repo personal en $TOOLBOX_DIR"
+        fi
     fi
     popd > /dev/null
 fi
