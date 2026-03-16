@@ -16,11 +16,31 @@ Para cada nuevo proyecto, no pierdas tiempo configurando carpetas. El script mae
 - **Atomic Design ready**: Carpetas configuradas en `src/components`.
 - **Inteligencia inyectada**: 12 skills de SDD copiados a `.agent/skills/`.
 - **Guardian Angel**: Configurado con **OpenCode:minimax-m2.5**.
-- **Memoria (Engram)**: Listo para recordar tus decisiones.
+- **Memoria (Engram)**: El cerebro del stack, encargado de recordar decisiones y contexto.
 
 ---
 
-## 🏗️ 2. El Flujo SDD (Spec-Driven Development)
+## 🧠 2. Memoria Persistente (Engram)
+
+**Engram** es el sistema que permite a Antigravity (y a cualquier agente del stack) recordar qué hicimos en sesiones pasadas, qué decisiones arquitectónicas tomamos y cómo resolvimos bugs específicos.
+
+### Comandos CLI Útiles
+Podés interactuar con la memoria directamente desde tu terminal:
+
+| Comando | Descripción |
+| :--- | :--- |
+| `engram tui` | **(RECOMENDADO)** Abre la interfaz visual para navegar memorias. |
+| `engram search "texto"` | Busca en toda la base de conocimientos por palabras clave. |
+| `engram save "Título" "Mensaje"` | Guarda una nota mental manual (usar `--project` para filtrar). |
+| `engram context` | Muestra un resumen del contexto reciente que la IA tiene cargado. |
+| `engram stats` | Estado de salud de la base de datos de memoria. |
+
+### ¿Cómo funciona la IA?
+Cuando lanzás un comando `/sdd-*`, la IA utiliza el protocolo **MCP (Model Context Protocol)** para consultar `engram` automáticamente. Al finalizar una tarea con `/sdd-archive`, el resumen se guarda en Engram para futuras referencias.
+
+---
+
+## 🏗️ 3. El Flujo SDD (Spec-Driven Development)
 
 **REGLA DE ORO**: Nunca escribas código sin antes planificar. Usá estos comandos en tu chat de **OpenCode**.
 
