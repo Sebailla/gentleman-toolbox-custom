@@ -130,7 +130,7 @@ fi
 # 8. Estructura de carpetas pro
 log_info "Creando estructura de carpetas pro..."
 mkdir -p src/lib src/hooks src/services src/types src/components/ui
-mkdir -p .docs .agent/skills specs
+mkdir -p .docs .agent/skills plans specs designs
 
 # 9. Crear AGENTS.md base (Reglas para la IA)
 log_info "Generando AGENTS.md base..."
@@ -180,7 +180,15 @@ cat > .agent/rules/agent-settings.md <<EOF
 
 ## Specs Workflow
 - **Action**: After completing a 'feat', use the 'documentar-specs-usuario' skill to document the change in /specs.
+
+## Plannings & Design Workflow
+- **Action**: Before writing code for a new feature, use the 'documentar-plan-diseno' skill to detail the architecture in /plans and UI specs in /designs.
 EOF
+
+# 11b. Instalar Skills de Documentación de Usuario y Planificación
+log_info "Instalando skills de documentación (Usuario y Planificación)..."
+mkdir -p .agent/skills/documentar-specs-usuario
+mkdir -p .agent/skills/documentar-plan-diseno
 
 cat > .agent/skills/documentar-specs-usuario/SKILL.md <<'EOF'
 ---
@@ -197,6 +205,23 @@ description: Genera especificaciones funcionales para el usuario final en la car
 1. Crear un archivo en \`specs/YYYY-MM-DD-nombre-feature.md\`.
 2. Redactar en lenguaje no técnico para el usuario final.
 3. Incluir: ¿Qué es?, Cómo se usa y Beneficios.
+EOF
+
+cat > .agent/skills/documentar-plan-diseno/SKILL.md <<'EOF'
+---
+name: documentar-plan-diseno
+description: Genera y almacena documentos de planificación técnica y diseño UI/UX en las carpetas /plans y /designs antes de iniciar el código de una nueva feature.
+---
+
+# 🏗️ Documentación de Planificación y Diseño
+
+## Cuándo usar esta skill
+- **Trigger**: **ANTES** de empezar a escribir código para una funcionalidad nueva grande o compleja, o durante debates de arquitectura y UI.
+
+## Flujo de Trabajo
+1. Si es técnica (Backend, BD): Crear \`plans/YYYY-MM-DD-plan-feature.md\`.
+2. Si es visual (Frontend, UX, UI): Crear \`designs/YYYY-MM-DD-diseno-feature.md\`.
+3. Detallar arquitectura, dependencias y referencias a Stitch o diseño propuesto.
 EOF
 
 # 10. Configurar Husky
