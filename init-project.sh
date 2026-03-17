@@ -157,6 +157,7 @@ cp AGENTS.md .windsurfrules
 # 11b. Instalar Skill de Documentación de Usuario
 log_info "Instalando skill de documentación de usuario..."
 mkdir -p .agent/skills/documentar-specs-usuario
+mkdir -p .agent/rules
 cat > .agent/rules/agent-settings.md <<EOF
 # Agent Settings & Project Preferences
 
