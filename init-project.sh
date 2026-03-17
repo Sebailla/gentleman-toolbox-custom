@@ -148,10 +148,35 @@ cat > AGENTS.md <<EOF
 - Prisma for all DB operations.
 - Tailwind CSS v4 for styling.
 
+## 🗣️ Comunicación y Documentación
+- **Idioma del Código**: Inglés (variables, funciones, clases).
+- **Idioma de Comentarios y Documentación**: Español.
+- **Comunicación del Agente**: Español Rioplatense (voseo, terminología técnica clara pero directa).
+- **Revisiones**: El feedback del Guardian Angel debe ser siempre en español.
+
+## 🎨 Diseño UI/UX
+- **Herramienta Principal**: Utilizar **Stitch** para la generación y refinamiento de interfaces.
+- **Referencia**: El diseño debe alinearse con las capturas y componentes generados por Stitch.
+
 ## Quality
 - All new features must have unit tests (Vitest).
 - Critical flows must have E2E tests (Playwright).
 - Use Conventional Commits.
+EOF
+
+# 9b. Crear pautas del Agente
+log_info "Generando pautas del agente (.agent/rules/agent-settings.md)..."
+mkdir -p .agent/rules
+cat > .agent/rules/agent-settings.md <<EOF
+# Agent Settings & Project Preferences
+
+## Communication
+- **Format**: Always use **Spanish (Rioplatense)** for interaction with the user.
+- **Documentation**: All project documentation, READMEs, and ADRs must be written in **Spanish**.
+
+## UI/UX Design Workflow
+- **Standard**: The project uses **Stitch** as the source of truth for UI components and layouts.
+- **Action**: When asked to create or modify UI, prioritize searching for Stitch-generated screens or components.
 EOF
 
 # 10. Configurar Husky
