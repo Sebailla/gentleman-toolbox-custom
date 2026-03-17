@@ -164,6 +164,13 @@ cat > AGENTS.md <<EOF
 - Use Conventional Commits.
 EOF
 
+# 9b. Sincronizar multiverso de IA (Provider-Agnostic)
+log_info "Sincronizando reglas para todos los agentes (Cursor, Claude, Gemini, Windsurf)..."
+cp AGENTS.md CLAUDE.md
+cp AGENTS.md GEMINI.md
+cp AGENTS.md .cursorrules
+cp AGENTS.md .windsurfrules
+
 # 11b. Instalar Skill de Documentación de Usuario
 log_info "Instalando skill de documentación de usuario..."
 mkdir -p .agent/skills/documentar-specs-usuario
