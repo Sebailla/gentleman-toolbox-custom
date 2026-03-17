@@ -130,7 +130,7 @@ fi
 # 8. Estructura de carpetas pro
 log_info "Creando estructura de carpetas pro..."
 mkdir -p src/lib src/hooks src/services src/types src/components/ui
-mkdir -p .docs .agent/skills plans/2.0
+mkdir -p .docs .agent/skills specs
 
 # 9. Crear AGENTS.md base (Reglas para la IA)
 log_info "Generando AGENTS.md base..."
@@ -164,9 +164,9 @@ cat > AGENTS.md <<EOF
 - Use Conventional Commits.
 EOF
 
-# 9b. Crear pautas del Agente
-log_info "Generando pautas del agente (.agent/rules/agent-settings.md)..."
-mkdir -p .agent/rules
+# 11b. Instalar Skill de Documentación de Usuario
+log_info "Instalando skill de documentación de usuario..."
+mkdir -p .agent/skills/documentar-specs-usuario
 cat > .agent/rules/agent-settings.md <<EOF
 # Agent Settings & Project Preferences
 
@@ -177,6 +177,26 @@ cat > .agent/rules/agent-settings.md <<EOF
 ## UI/UX Design Workflow
 - **Standard**: The project uses **Stitch** as the source of truth for UI components and layouts.
 - **Action**: When asked to create or modify UI, prioritize searching for Stitch-generated screens or components.
+
+## Specs Workflow
+- **Action**: After completing a 'feat', use the 'documentar-specs-usuario' skill to document the change in /specs.
+EOF
+
+cat > .agent/skills/documentar-specs-usuario/SKILL.md <<'EOF'
+---
+name: documentar-specs-usuario
+description: Genera especificaciones funcionales para el usuario final en la carpeta /specs después de completar una nueva característica.
+---
+
+# 📝 Documentación de Especificaciones para el Usuario
+
+## Cuándo usar esta skill
+- **Trigger**: Después de terminar una funcionalidad nueva (\`feat\`).
+
+## Instrucciones
+1. Crear un archivo en \`specs/YYYY-MM-DD-nombre-feature.md\`.
+2. Redactar en lenguaje no técnico para el usuario final.
+3. Incluir: ¿Qué es?, Cómo se usa y Beneficios.
 EOF
 
 # 10. Configurar Husky
