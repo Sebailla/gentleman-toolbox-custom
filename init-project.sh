@@ -25,31 +25,17 @@ if [[ -z "$PROJECT_NAME" ]]; then
     exit 1
 fi
 
-# 2. Auto-update del Toolbox (Opcional pero recomendado)
+# 2. Verificar estado con tu repo personal (Origin)
 TOOLBOX_DIR="/Users/sebailla/Documents/Proyectos/gentleman-toolbox"
 if [ -d "$TOOLBOX_DIR/.git" ]; then
-    log_info "Verificando actualizaciones del Toolbox..."
+    log_info "Verificando actualizaciones de tu propio Toolbox..."
     # Guardamos el dir actual para volver después del check
     pushd "$TOOLBOX_DIR" > /dev/null
     git fetch -q origin main 2>/dev/null
-    git fetch -q upstream main 2>/dev/null
     
     LOCAL=$(git rev-parse HEAD)
     ORIGIN_REMOTE=$(git rev-parse origin/main 2>/dev/null || echo "$LOCAL")
-    UPSTREAM_REMOTE=$(git rev-parse upstream/main 2>/dev/null || echo "$LOCAL")
     
-    # 1. Verificar si hay novedades de Alan (Upstream)
-    UPSTREAM_BASE=$(git merge-base HEAD "$UPSTREAM_REMOTE" 2>/dev/null || echo "$LOCAL")
-    if [ "$LOCAL" != "$UPSTREAM_REMOTE" ] && [ "$UPSTREAM_BASE" != "$UPSTREAM_REMOTE" ]; then
-        log_info "Se encontraron cambios nuevos en Upstream (Alan). Actualizando..."
-        echo -e "${CYAN}Cambios detectados:${NC}"
-        git log HEAD..upstream/main --oneline -n 10
-        git pull --rebase -q upstream main
-        log_success "Toolbox actualizado con lo último de Alan."
-        LOCAL=$(git rev-parse HEAD) # Actualizar LOCAL después del rebase
-    fi
-
-    # 2. Verificar estado con tu repo personal (Origin)
     if [ "$LOCAL" = "$ORIGIN_REMOTE" ]; then
         log_success "Toolbox sincronizado con tu repo personal."
     else
@@ -57,11 +43,8 @@ if [ -d "$TOOLBOX_DIR/.git" ]; then
         if [ "$LOCAL" = "$ORIGIN_BASE" ]; then
             log_info "Tu repo local está atrasado respecto a tu origin. Actualizando..."
             git pull -q origin main
-        elif [ "$ORIGIN_REMOTE" = "$ORIGIN_BASE" ]; then
-            log_warn "Tenés cambios locales no pusheados a tu repo personal (origin)."
-        else
-            log_warn "Tu historial ha divergido de 'origin' (probablemente por el rebase de Alan)."
-            log_info "Sugerencia: Revisá los cambios y tirá un 'git push --force origin main' para sincronizar tu repo."
+        elif [ "$ORIGIN_REMOTE" != "$ORIGIN_BASE" ]; then
+            log_warn "Tenés cambios locales y remotos que divergieron."
         fi
     fi
     popd > /dev/null
