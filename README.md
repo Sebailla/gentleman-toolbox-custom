@@ -7,12 +7,37 @@ Este búnker está configurado para recibir lo último de Alan pero guardar tus 
 - **`origin`**: Tu repositorio personal (`gentleman-toolbox-custom`).
 - **`upstream`**: El repositorio original de Alan (`gentle-ai`).
 
-### 🚀 Paso 1: Inicialización & Auto-Update
-Cada vez que quieras empezar algo nuevo con todo el stack, corré el script maestro. El script **verificará automáticamente** si Alan subió algo nuevo al `upstream` y te informará antes de crear el proyecto:
+### 🚀 Paso 1: Inicialización
+Cada vez que quieras empezar algo nuevo con todo el stack, corré el script maestro. Nota: el script solo verifica actualizaciones contra tu repo personal (`origin`) para proteger tus customizaciones:
 
 ```bash
 /Users/sebailla/Documents/Proyectos/gentleman-toolbox/init-project.sh nombre-del-proyecto
 ```
+
+### 🔄 Paso 1.5: ¿Cómo actualizar con novedades de Alan? (Manual)
+Como tenemos un Toolbox super personalizado con el "Pibe Stack" (Stitch, idioma Rioplatense, automatización de specs), las actualizaciones de Alan (`upstream`) ahora se bajan a mano para que nada se rompa por accidente. 
+
+Cuando quieras traerte mejoras del repo oficial:
+
+1. **Bajate la data nueva**:
+   ```bash
+   cd /Users/sebailla/Documents/Proyectos/gentleman-toolbox
+   git fetch upstream
+   ```
+2. **Fijate qué subió Alan**:
+   ```bash
+   git log HEAD..upstream/main --oneline
+   ```
+3. **Elegí cómo traer los cambios**:
+   - **Forma Quirúrgica (Cherry-pick)**: ¿Te sirve solo un fix en particular? Usalo así:
+     ```bash
+     git cherry-pick <hash-del-commit-de-alan>
+     ```
+   - **Merge Todo (A lo guapo)**: Para traer todas las novedades resolviendo los conflictos a mano si chocan con tu configuración:
+     ```bash
+     git merge upstream/main
+     ```
+     *(Resolvé los conflictos, `git add .`, y `git commit`)*
 
 ## 🛠️ Paso 2: Configuración Post-Creación
 Aunque el script hace casi todo por vos, para que el stack quede **TOTALMENTE COMPLETO** y funcional, seguí estos pasos dentro de la carpeta del proyecto:
