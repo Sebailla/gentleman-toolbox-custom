@@ -249,6 +249,10 @@ else
     log_warn "gentle-ai no encontrado. Corré 'gentle-ai install' manualmente."
 fi
 
+# 13. Instalar skill de UI (Interface Design)
+log_info "Instalando skill de interface-design..."
+npx skills add https://github.com/dammyjay93/interface-design --skill interface-design
+
 log_success "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 log_success "  ¡PROYECTO '$PROJECT_NAME' LISTO PARA LA GUERRA!"
 log_success "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
