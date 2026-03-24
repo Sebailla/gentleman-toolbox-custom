@@ -58,6 +58,28 @@ Cuando lanzás un comando `/sdd-*`, la IA utiliza el protocolo **MCP (Model Cont
 
 ---
 
+## 🚀 3.5. Git Workflow y Arquitectura de Release
+
+Tu búnker viene con un pipeline de CI/CD local y remoto nivel Dios:
+
+1. **Ramas Estrictas (Husky pre-push)**
+No podés pushear ramas con nombres aleatorios. El sistema exige el formato `tipo/nombre-en-kebab-case` (ej: `feat/dashboard`, `fix/navbar`). Si no, te rebota el push.
+
+2. **Commits Profesionales (Commitlint)**
+Todos tus commits deben seguir la convención de *Conventional Commits* (`feat: ...`, `fix: ...`). Husky intercepta cualquier commit basura y te obliga a corregirlo.
+
+3. **Release Automático (GitHub Actions)**
+No más bumps manuales de versión. Al hacer merge de tu PR a la rama `main`, un action de GitHub (`.github/workflows/release.yml`) ejecuta `bun run release`. Esto suma al Versionado Semántico (SemVer), actualiza el `CHANGELOG.md` resumiendo tus commits, y genera un Tag automático.
+
+## 🏗️ 3.6. Arquitectura Modular (Feature-Sliced Design)
+
+Olvidate de la vieja arquitectura por componentes sueltos. El proyecto se instaura bajo un modelo **Modular nativo para Next.js 16 (App Router)**:
+- `src/core/*`: Para lógica, tipos y hooks compartidos globales.
+- `src/modules/*`: Tu código agrupado por dominio de negocio (ej. Auth, Facturación). Cada módulo es dueño de su UI, lógica y testing.
+- `src/components/ui/`: Estrictamente para componentes visuales genéricos o tontos (ej. Botones, Modales).
+
+---
+
 ## 🧰 4. Catálogo de Skills (Toolbox)
 
 Los **Skills** son archivos de inteligencia modular que Antigravity carga dinámicamente según la tarea que le pidas. Aquí tenés el inventario de lo que tenés instalado en tu búnker:

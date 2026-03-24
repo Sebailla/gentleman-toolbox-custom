@@ -60,10 +60,10 @@ log_info "Inicializando Git..."
 git init -q
 
 # 4. Crear Next.js App (Gentleman Stack)
-log_info "Lanzando create-next-app (Next.js latest, TS, Tailwind v4, App Router)..."
+log_info "Lanzando create-next-app (Next.js 16, TS, Tailwind v4, App Router)..."
 # Usamos --no-install para controlar nosotros las dependencias
 # Usamos --yes para evitar promts interactivos (ej: React Compiler)
-bunx create-next-app@latest . \
+bunx create-next-app@16 . \
     --typescript \
     --tailwind \
     --eslint \
@@ -81,7 +81,8 @@ bun add @prisma/client lucide-react clsx tailwind-merge date-fns zod \
 
 bun add -d prisma vitest @testing-library/react @testing-library/dom \
     jsdom @playwright/test husky lint-staged tsx @types/node @types/react \
-    @types/react-dom @types/bcryptjs @types/jsonwebtoken
+    @types/react-dom @types/bcryptjs @types/jsonwebtoken \
+    @commitlint/cli @commitlint/config-conventional standard-version
 
 # 6. Inicializar Prisma (PostgreSQL por defecto)
 log_info "Inicializando Prisma..."
@@ -110,10 +111,44 @@ else
     log_warn "GGA no encontrado en el sistema, pero generamos .gga por si lo instalás luego."
 fi
 
-# 8. Estructura de carpetas pro
-log_info "Creando estructura de carpetas pro..."
-mkdir -p src/lib src/hooks src/services src/types src/components/ui
-mkdir -p .docs .agent/skills plans specs designs
+# 8. Estructura de carpetas modular (Feature-Sliced Design)
+log_info "Creando estructura de carpetas modular..."
+mkdir -p src/core/lib src/core/types src/core/hooks src/modules src/components/ui
+mkdir -p .docs .agent/skills plans specs designs .github/workflows
+
+# 8.5. Configurar GitHub Actions (Release Automático)
+log_info "Configurando GitHub Actions para versionado semántico..."
+cat > .github/workflows/release.yml <<'EOF'
+name: Auto Release En Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: "🚀 Generar Release"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Run Release Script
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          bun run release
+          git push --follow-tags origin main
+EOF
 
 # 9. Crear AGENTS.md base (Reglas para la IA)
 log_info "Generando AGENTS.md base..."
@@ -121,12 +156,12 @@ cat > AGENTS.md <<EOF
 # Project Rules (Gentleman Standard)
 
 ## Architecture
-- Use Clean/Hexagonal Architecture.
-- Keep business logic in \`src/services\` or \`src/lib\`.
-- UI components should be in \`src/components\`.
+- Use Modular / Feature-Sliced Architecture optimized for Next.js 16 Fullstack (App Router STRICT).
+- Group logic (services, types, components) by domain in \`src/modules/<feature-name>/\`.
+- Keep shared global logic in \`src/core/\` and shared UI in \`src/components/ui/\`.
 
 ## Standards
-- Atomic Design for components.
+- Component-Driven: Keep feature UI inside domain modules. Only generic UI (buttons, dialogs) goes in \`src/components/ui/\`.
 - Zod for schema validation.
 - Prisma for all DB operations.
 - Tailwind CSS v4 for styling.
@@ -141,10 +176,11 @@ cat > AGENTS.md <<EOF
 - **Herramienta Principal**: Utilizar **Stitch** para la generación y refinamiento de interfaces.
 - **Referencia**: El diseño debe alinearse con las capturas y componentes generados por Stitch.
 
-## Quality
+## Quality & Workflow
 - All new features must have unit tests (Vitest).
 - Critical flows must have E2E tests (Playwright).
-- Use Conventional Commits.
+- Use Conventional Commits strictly.
+- **Branch Naming**: When asked to create a branch, ALWAYS follow this format: `tipo/nombre-en-kebab-case`. Valid types are: `feat, fix, hotfix, chore, docs, refactor, test`. (e.g. `feat/new-dashboard`).
 EOF
 
 # 9b. Sincronizar multiverso de IA (Provider-Agnostic)
@@ -215,9 +251,39 @@ description: Genera y almacena documentos de planificación técnica y diseño U
 3. Detallar arquitectura, dependencias y referencias a Stitch o diseño propuesto.
 EOF
 
-# 10. Configurar Husky
-log_info "Finalizando configuración de Husky..."
+# 10. Configurar Husky, Commitlint y Versionado
+log_info "Finalizando configuración de Husky y Commitlint..."
 bunx husky init
+
+# Añadir configuración para commitlint
+cat > commitlint.config.mjs <<'EOF'
+export default { extends: ['@commitlint/config-conventional'] };
+EOF
+
+# Agregar hook commit-msg para obligar conventional commits
+cat > .husky/commit-msg <<'EOF'
+bunx --no -- commitlint --edit $1
+EOF
+
+# Agregar validación estricta de nombres de ramas (pre-push)
+cat > .husky/pre-push <<'EOF'
+#!/usr/bin/env bash
+LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+VALID_REGEX="^(feat|fix|hotfix|chore|docs|refactor|test)\/[a-z0-9-]+$"
+
+if [[ "$LOCAL_BRANCH" == "main" || "$LOCAL_BRANCH" == "master" || "$LOCAL_BRANCH" == "develop" ]]; then
+    exit 0
+fi
+
+if [[ ! $LOCAL_BRANCH =~ $VALID_REGEX ]]; then
+    echo "❌ ERROR Arquitectónico: La rama '$LOCAL_BRANCH' es un cambalache."
+    echo "👉 Formato exigido: tipo/nombre-en-kebab-case (ej: feat/login-ui, fix/header-roto)"
+    echo "👉 Tipos válidos: feat, fix, hotfix, chore, docs, refactor, test"
+    exit 1
+fi
+EOF
+chmod +x .husky/pre-push
+
 # Agregar lint-staged al pre-commit
 cat > .husky/pre-commit <<'EOF'
 bun test
@@ -230,6 +296,7 @@ log_info "Actualizando scripts en package.json..."
 npm pkg set scripts.test="vitest"
 npm pkg set scripts.db:seed="tsx prisma/seed.ts"
 npm pkg set scripts.db:reset="prisma migrate reset --force && bun run db:seed"
+npm pkg set scripts.release="standard-version"
 
 # 12. Inyectar inteligencia (Gentle AI Skills & Ecosystem)
 log_info "Configurando ecosistema Gentle AI (Skills, Engram, Persona)..."

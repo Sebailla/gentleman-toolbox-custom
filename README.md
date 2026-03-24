@@ -70,14 +70,14 @@ gentle-ai install --agent opencode --preset full-gentleman
 ```
 
 ## 📦 El Stack Incluido:
-- **Next.js 15+** (App Router, React 19, React Compiler).
+- **Next.js 16** (Arquitectura Modular / Feature-Sliced Design estricta con App Router).
 - **Prisma 7** (ORM Moderno).
 - **Tailwind CSS v4** (Styling de última generación).
+- **Git Workflow Pro**: Versionado Automático SemVer con GitHub Actions, Commitlint y pre-push hooks estrictos para nombres de ramas.
 - **GGA** (Gentleman Guardian Angel con OpenCode/Minimax).
 - **Engram**: Memoria persistente cross-session.
 - **SDD**: Flujo de 9 fases para planificar antes de picar código.
 - **Tests**: Vitest (Unitarios) & Playwright (E2E).
-- **Git Hooks**: Husky & Lint-staged automatizados.
 
 ---
 > [!TIP]
