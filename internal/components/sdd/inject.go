@@ -285,7 +285,7 @@ func mergeJSONFile(path string, overlay []byte) (filemerge.WriteResult, error) {
 		return filemerge.WriteResult{}, fmt.Errorf("migrate opencode agents key: %w", err)
 	}
 
-	merged, err := filemerge.MergeJSONObjects(baseJSON, overlay)
+	merged, err := filemerge.MergeJSONCPreserving(baseJSON, overlay)
 	if err != nil {
 		return filemerge.WriteResult{}, err
 	}

@@ -1,6 +1,7 @@
 package mcp
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -45,14 +46,27 @@ func TestInjectOpenCodeMergesContext7AndIsIdempotent(t *testing.T) {
 	}
 
 	text := string(config)
+	var parsed map[string]any
+	if err := json.Unmarshal(config, &parsed); err != nil {
+		t.Fatalf("opencode.json is not valid JSON: %v", err)
+	}
+
+	mcp, ok := parsed["mcp"].(map[string]any)
+	if !ok {
+		t.Fatal("opencode.json missing 'mcp' object")
+	}
+
+	context7, ok := mcp["context7"].(map[string]any)
+	if !ok {
+		t.Fatal("opencode.json missing 'mcp.context7' object")
+	}
+
+	if context7["type"] != "remote" {
+		t.Fatalf("expected mcp.context7.type to be 'remote', got %v", context7["type"])
+	}
+
 	if !strings.Contains(text, `"mcp"`) {
-		t.Fatal("opencode.json missing mcp key")
-	}
-	if !strings.Contains(text, `"type": "remote"`) {
-		t.Fatal("opencode.json context7 missing type: remote")
-	}
-	if strings.Contains(text, `"mcpServers"`) {
-		t.Fatal("opencode.json should use 'mcp' key, not 'mcpServers'")
+		t.Fatal("safety check fails")
 	}
 }
 

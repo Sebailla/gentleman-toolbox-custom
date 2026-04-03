@@ -13,6 +13,7 @@ import (
 	"github.com/gentleman-programming/gentle-ai/internal/agents/gemini"
 	"github.com/gentleman-programming/gentle-ai/internal/agents/opencode"
 	"github.com/gentleman-programming/gentle-ai/internal/agents/vscode"
+	"github.com/gentleman-programming/gentle-ai/internal/injector"
 )
 
 func claudeAdapter() agents.Adapter   { return claude.NewAdapter() }
@@ -239,9 +240,12 @@ func TestInjectVSCodeCopilotMergesIntoJSONCSettings(t *testing.T) {
 		t.Fatalf("read settings file: %v", err)
 	}
 
+	// VS Code settings are JSONC (JSON with comments). 
+	// We need to normalize it before standard unmarshal.
+	inj := injector.NewJSONCInjector()
 	var settings map[string]any
-	if err := json.Unmarshal(content, &settings); err != nil {
-		t.Fatalf("unmarshal: %v", err)
+	if err := json.Unmarshal(inj.Normalize(content), &settings); err != nil {
+		t.Fatalf("unmarshal: %v\nContent:\n%s", err, string(content))
 	}
 
 	autoApprove, ok := settings["chat.tools.autoApprove"].(bool)

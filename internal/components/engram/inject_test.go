@@ -1,6 +1,7 @@
 package engram
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -112,17 +113,23 @@ func TestInjectOpenCodeMergesEngramToSettings(t *testing.T) {
 	}
 
 	text := string(config)
-	if !strings.Contains(text, `"engram"`) {
-		t.Fatal("opencode.json missing engram server entry")
+	var parsed map[string]any
+	if err := json.Unmarshal(config, &parsed); err != nil {
+		t.Fatalf("opencode.json is not valid JSON: %v", err)
 	}
-	if !strings.Contains(text, `"mcp"`) {
-		t.Fatal("opencode.json missing mcp key")
+
+	mcp, ok := parsed["mcp"].(map[string]any)
+	if !ok {
+		t.Fatal("opencode.json missing 'mcp' object")
 	}
-	if strings.Contains(text, `"mcpServers"`) {
-		t.Fatal("opencode.json should use 'mcp' key, not 'mcpServers'")
+
+	engram, ok := mcp["engram"].(map[string]any)
+	if !ok {
+		t.Fatal("opencode.json missing 'mcp.engram' object")
 	}
-	if !strings.Contains(text, `"type": "local"`) {
-		t.Fatal("opencode.json engram missing type: local")
+
+	if engram["type"] != "local" {
+		t.Fatalf("expected mcp.engram.type to be 'local', got %v", engram["type"])
 	}
 
 	// Verify NO plugin files or plugin arrays exist.
