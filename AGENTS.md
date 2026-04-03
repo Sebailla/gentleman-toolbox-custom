@@ -9,6 +9,11 @@ When working on this project, load the relevant skill(s) BEFORE writing any code
 3. Follow ALL patterns and rules from the loaded skill
 4. Multiple skills can apply simultaneously
 
+## 🛡️ Protocolo de Actuación (MANDATORIO)
+- **Clarificar antes de actuar**: Ante cualquier duda, ambigüedad o falta de contexto, el agente DEBE detenerse y preguntar.
+- **Confirmación de Entendimiento**: Antes de realizar cualquier cambio significativo, el agente debe resumir qué entendió del requerimiento y qué plan de acción propone, esperando la confirmación del usuario.
+- **Sin Suposiciones**: Nunca asumas el stack, la arquitectura o el comportamiento deseado. Validá siempre.
+
 ## Skills
 
 | Skill | Trigger | Path |

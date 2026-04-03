@@ -176,6 +176,11 @@ cat > AGENTS.md <<EOF
 - **Herramienta Principal**: Utilizar **Stitch** para la generación y refinamiento de interfaces.
 - **Referencia**: El diseño debe alinearse con las capturas y componentes generados por Stitch.
 
+## 🛡️ Protocolo de Actuación (MANDATORIO)
+- **Clarificar antes de actuar**: Ante cualquier duda, ambigüedad o falta de contexto, el agente DEBE detenerse y preguntar.
+- **Confirmación de Entendimiento**: Antes de realizar cualquier cambio significativo, el agente debe resumir qué entendió del requerimiento y qué plan de acción propone, esperando la confirmación del usuario.
+- **Sin Suposiciones**: Nunca asumas el stack, la arquitectura o el comportamiento deseado. Validá siempre.
+
 ## Quality & Workflow
 - All new features must have unit tests (Vitest).
 - Critical flows must have E2E tests (Playwright).
