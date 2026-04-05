@@ -77,6 +77,8 @@ gentle-ai install --agent opencode --preset full-gentleman
 - **GGA** (Gentleman Guardian Angel con OpenCode/Minimax).
 - **Engram**: Memoria persistente cross-session.
 - **SDD**: Flujo de 9 fases para planificar antes de picar código.
+- **Orquestador Estricto**: La IA asume el rol exclusivo de coordinadora. No toca código, no asume contexto y delega las tareas en subagentes especializados.
+- **Única Fuente de Verdad UI/UX**: Todas las interfaces derivan estrictamente de la carpeta `design-md`, que se propaga y clona automáticamente a cada nuevo proyecto.
 - **Tests**: Vitest (Unitarios) & Playwright (E2E).
 
 ---

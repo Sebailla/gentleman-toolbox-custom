@@ -172,14 +172,13 @@ cat > AGENTS.md <<EOF
 - **Comunicación del Agente**: Español Rioplatense (voseo, terminología técnica clara pero directa).
 - **Revisiones**: El feedback del Guardian Angel debe ser siempre en español.
 
-## 🎨 Diseño UI/UX
-- **Herramienta Principal**: Utilizar **Stitch** para la generación y refinamiento de interfaces.
-- **Referencia**: El diseño debe alinearse con las capturas y componentes generados por Stitch.
-
 ## 🛡️ Protocolo de Actuación (MANDATORIO)
-- **Clarificar antes de actuar**: Ante cualquier duda, ambigüedad o falta de contexto, el agente DEBE detenerse y preguntar.
-- **Confirmación de Entendimiento**: Antes de realizar cualquier cambio significativo, el agente debe resumir qué entendió del requerimiento y qué plan de acción propone, esperando la confirmación del usuario.
-- **Sin Suposiciones**: Nunca asumas el stack, la arquitectura o el comportamiento deseado. Validá siempre.
+- **Rol del Orquestador**: El orquestador DEBE limitarse a guiar y mantener el hilo de la conversación. No debe escribir ni modificar código directamente. Toda acción técnica, incluyendo la edición de código, DEBE ser delegada a **subagentes**.
+- **Cero Suposiciones**: Nunca te quedes con dudas ni infieras requerimientos, arquitectura o decisiones técnicas. Antes de tomar cualquier decisión, PREGUNTA todo lo necesario al usuario para tener el contexto completo y exacto.
+- **Confirmación Constante**: Antes de delegar cambios significativos a un subagente, resume la acción y espera la confirmación del usuario.
+
+## 🎨 Diseño UI/UX
+- **Base de Diseño**: TODO lo relacionado con el diseño, UI, UX y aspectos visuales DEBE basarse estricta y únicamente en la información documentada en la carpeta \`design-md\`. No inventes, ni uses información externa, apégate al contenido de esa carpeta.
 
 ## Quality & Workflow
 - All new features must have unit tests (Vitest).
@@ -206,9 +205,13 @@ cat > .agent/rules/agent-settings.md <<EOF
 - **Format**: Always use **Spanish (Rioplatense)** for interaction with the user.
 - **Documentation**: All project documentation, READMEs, and ADRs must be written in **Spanish**.
 
+## 🛡️ Protocolo del Orquestador
+- **Delegación y Liderazgo**: Como orquestador de AI, debes llevar el hilo de la conversación y planificar. NUNCA toques código. Toda modificación debe ser delegada a **subagentes**.
+- **Cero Suposiciones**: Nunca te quedes con dudas ni infieras reglas de arquitectura, decisiones o qué requiere el usuario. Evalúa e interroga metódicamente antes de proceder.
+
 ## UI/UX Design Workflow
-- **Standard**: The project uses **Stitch** as the source of truth for UI components and layouts.
-- **Action**: When asked to create or modify UI, prioritize searching for Stitch-generated screens or components.
+- **Standard**: La única fuente de verdad para toda tarea referida a la UI, UX o diseño visual es la carpeta \`design-md\`.
+- **Action**: Siempre que debas crear o modificar una interfaz, básate obligatoria y estrictamente en la documentación y los assets presentes en \`design-md\`. Nunca inventes estilos por fuera de ese directorio.
 
 ## Specs Workflow
 - **Action**: After completing a 'feat', use the 'documentar-specs-usuario' skill to document the change in /specs.
@@ -324,6 +327,15 @@ fi
 # 13. Instalar skill de UI (Interface Design)
 log_info "Instalando skill de interface-design..."
 npx skills add https://github.com/dammyjay93/interface-design --skill interface-design
+
+# 14. Copiar design-md (Fuente de verdad de UI/UX)
+if [ -d "$TOOLBOX_DIR/design-md" ]; then
+    log_info "Copiando carpeta design-md inicial..."
+    cp -r "$TOOLBOX_DIR/design-md" .
+else
+    log_warn "No se encontró la carpeta design-md en el toolbox, creando carpeta vacía..."
+    mkdir -p design-md
+fi
 
 log_success "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 log_success "  ¡PROYECTO '$PROJECT_NAME' LISTO PARA LA GUERRA!"

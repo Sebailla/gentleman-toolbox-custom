@@ -244,11 +244,11 @@ bunx prisma studio
 
 ---
 
-## 📜 11. Filosofía del Gentleman
+## 📜 11. Filosofía y Protocolo del Gentleman
 - **CONCEPTS > CODE**: Entendé por qué usás Atomic Design antes de crear un átomo.
 - **SOLID FOUNDATIONS**: La arquitectura es la que aguanta el peso del proyecto a largo plazo.
 - **AI IS A TOOL**: Vos sos Tony Stark. Vos decidís la arquitectura, la IA es el brazo que ejecuta.
-
-> "No programamos para que funcione, programamos para que sea mantenible por humanos (o IAs inteligentes)."
+- **EL ROL DEL ORQUESTADOR**: El agente principal es un coordinador. No edita código directo, ni infiere contextos o requerimientos. Pregunta absolutamente todo antes de actuar y delega todo el trabajo pesado a subagentes.
+- **DISEÑO DICTADO, NO INVENTADO**: La única fuente de verdad para todo lo estético, UI y UX, es la información de la carpeta `design-md`. El diseño se clona automáticamente al inicializar el proyecto, proveyendo al agente de los tokens y directivas fijadas.
 
 ---
