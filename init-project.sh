@@ -10,12 +10,14 @@ set -e
 # Configuración de colores
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
 CYAN='\033[0;36m'
 BOLD='\033[1m'
 NC='\033[0m'
 
 log_info() { echo -e "${CYAN}${BOLD}[INFO]${NC} $1"; }
 log_success() { echo -e "${GREEN}${BOLD}[OK]${NC} $1"; }
+log_warn() { echo -e "${YELLOW}${BOLD}[WARN]${NC} $1"; }
 log_error() { echo -e "${RED}${BOLD}[ERROR]${NC} $1"; }
 
 # 1. Validar nombre del proyecto
@@ -31,7 +33,7 @@ if [ -d "$TOOLBOX_DIR/.git" ]; then
     log_info "Verificando actualizaciones de tu propio Toolbox..."
     # Guardamos el dir actual para volver después del check
     pushd "$TOOLBOX_DIR" > /dev/null
-    git fetch -q origin main 2>/dev/null
+    git fetch -q origin main 2>/dev/null || log_warn "No se pudo conectar al remoto (origin). Continuando con versión local..."
     
     LOCAL=$(git rev-parse HEAD)
     ORIGIN_REMOTE=$(git rev-parse origin/main 2>/dev/null || echo "$LOCAL")
@@ -42,7 +44,7 @@ if [ -d "$TOOLBOX_DIR/.git" ]; then
         ORIGIN_BASE=$(git merge-base HEAD "$ORIGIN_REMOTE" 2>/dev/null || echo "$LOCAL")
         if [ "$LOCAL" = "$ORIGIN_BASE" ]; then
             log_info "Tu repo local está atrasado respecto a tu origin. Actualizando..."
-            git pull -q origin main
+            git pull -q origin main || log_warn "No se pudo hacer pull. Seguimos con tu versión local actual."
         elif [ "$ORIGIN_REMOTE" != "$ORIGIN_BASE" ]; then
             log_warn "Tenés cambios locales y remotos que divergieron."
         fi
@@ -324,11 +326,7 @@ else
     log_warn "gentle-ai no encontrado. Corré 'gentle-ai install' manualmente."
 fi
 
-# 13. Instalar skill de UI (Interface Design)
-log_info "Instalando skill de interface-design..."
-npx skills add https://github.com/dammyjay93/interface-design --skill interface-design
-
-# 14. Copiar design-md (Fuente de verdad de UI/UX)
+# 13. Copiar design-md (Fuente de verdad de UI/UX)
 if [ -d "$TOOLBOX_DIR/design-md" ]; then
     log_info "Copiando carpeta design-md inicial..."
     cp -r "$TOOLBOX_DIR/design-md" .
