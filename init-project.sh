@@ -113,9 +113,12 @@ else
     log_warn "GGA no encontrado en el sistema, pero generamos .gga por si lo instalás luego."
 fi
 
-# 8. Estructura de carpetas modular (Feature-Sliced Design)
+# 8. Estructura de carpetas modular (Modular Vertical Slicing)
 log_info "Creando estructura de carpetas modular..."
 mkdir -p src/core/lib src/core/types src/core/hooks src/modules src/components/ui
+# El patrón exige componentes, servicios, actions y tipos por defecto
+mkdir -p src/modules/example/components src/modules/example/services
+touch src/modules/example/actions.ts src/modules/example/types.ts src/modules/example/index.ts
 mkdir -p .docs .agent/skills plans specs designs .github/workflows
 
 # 8.5. Configurar GitHub Actions (Release Automático)
@@ -157,9 +160,12 @@ log_info "Generando AGENTS.md base..."
 cat > AGENTS.md <<EOF
 # Project Rules (Gentleman Standard)
 
-## Architecture
-- Use Modular / Feature-Sliced Architecture optimized for Next.js 16 Fullstack (App Router STRICT).
-- Group logic (services, types, components) by domain in \`src/modules/<feature-name>/\`.
+## Architecture: Modular Vertical Slicing
+- Use **Modular Vertical Slicing** architecture optimized for Next.js 16 Fullstack (App Router STRICT).
+- Each module in \`src/modules/<name>/\` must have: \`components/\`, \`services/\`, \`actions.ts\`, \`types.ts\`, and \`index.ts\`.
+- **Services**: Pure business logic and DB access only.
+- **Actions**: Server Actions for validation (Zod) and orchestration. Always use \`'use server'\`.
+- **Components**: UI only. Delegate complex logic to Services (Server) or Actions (Client).
 - Keep shared global logic in \`src/core/\` and shared UI in \`src/components/ui/\`.
 
 ## Standards
@@ -187,6 +193,9 @@ cat > AGENTS.md <<EOF
 - Critical flows must have E2E tests (Playwright).
 - Use Conventional Commits strictly.
 - **Branch Naming**: When asked to create a branch, ALWAYS follow this format: `tipo/nombre-en-kebab-case`. Valid types are: `feat, fix, hotfix, chore, docs, refactor, test`. (e.g. `feat/new-dashboard`).
+
+## Available Skills
+- \`gentle-ai-modular-architecture\`: Detailed rules for the Modular Vertical Slicing pattern.
 EOF
 
 # 9b. Sincronizar multiverso de IA (Provider-Agnostic)
@@ -326,7 +335,12 @@ else
     log_warn "gentle-ai no encontrado. Corré 'gentle-ai install' manualmente."
 fi
 
-# 13. Copiar design-md (Fuente de verdad de UI/UX)
+# 13. Copiar documentación de arquitectura y diseño
+if [ -f "$TOOLBOX_DIR/ARCHITECTURE_SKILLS.md" ]; then
+    log_info "Copiando ARCHITECTURE_SKILLS.md..."
+    cp "$TOOLBOX_DIR/ARCHITECTURE_SKILLS.md" .
+fi
+
 if [ -d "$TOOLBOX_DIR/design-md" ]; then
     log_info "Copiando carpeta design-md inicial..."
     cp -r "$TOOLBOX_DIR/design-md" .

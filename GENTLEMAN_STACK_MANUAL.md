@@ -71,12 +71,22 @@ Todos tus commits deben seguir la convención de *Conventional Commits* (`feat: 
 3. **Release Automático (GitHub Actions)**
 No más bumps manuales de versión. Al hacer merge de tu PR a la rama `main`, un action de GitHub (`.github/workflows/release.yml`) ejecuta `bun run release`. Esto suma al Versionado Semántico (SemVer), actualiza el `CHANGELOG.md` resumiendo tus commits, y genera un Tag automático.
 
-## 🏗️ 3.6. Arquitectura Modular (Feature-Sliced Design)
+## 🏗️ 3.6. Arquitectura Modular (Modular Vertical Slicing)
 
-Olvidate de la vieja arquitectura por componentes sueltos. El proyecto se instaura bajo un modelo **Modular nativo para Next.js 16 (App Router)**:
-- `src/core/*`: Para lógica, tipos y hooks compartidos globales.
-- `src/modules/*`: Tu código agrupado por dominio de negocio (ej. Auth, Facturación). Cada módulo es dueño de su UI, lógica y testing.
-- `src/components/ui/`: Estrictamente para componentes visuales genéricos o tontos (ej. Botones, Modales).
+Olvidate de la vieja arquitectura por componentes sueltos. El proyecto se instaura bajo un modelo **Modular nativo para Next.js 16 (App Router)** basado en **Vertical Slicing**:
+
+### Estructura de un Módulo (`src/modules/[module-name]/`)
+Cada funcionalidad independiente es un módulo con sus propias capas:
+- **`services/`**: Lógica de negocio pura y consultas a la DB. Prohibido usar APIs de Next.js (cookies, revalidate) acá.
+- **`actions.ts`**: El controlador. Valida inputs con **Zod**, llama a servicios y maneja la revalidación de caché. Siempre `'use server'`.
+- **`components/`**: UI específica del dominio.
+- **`types.ts`**: Contrato del dominio (Interfaces y Schemas).
+- **`index.ts`**: La API pública del módulo. **IMPORTANTE**: Otros módulos solo pueden importar de acá.
+
+### Reglas de Dependencia
+- `src/core/*`: Lógica, tipos y hooks compartidos globales.
+- `src/components/ui/`: Solo componentes visuales genéricos (Botones, inputs).
+- **Unidireccionalidad**: Los módulos no se cruzan. Si necesitás algo de otro módulo, usá su `index.ts`.
 
 ---
 
