@@ -20,12 +20,71 @@ log_success() { echo -e "${GREEN}${BOLD}[OK]${NC} $1"; }
 log_warn() { echo -e "${YELLOW}${BOLD}[WARN]${NC} $1"; }
 log_error() { echo -e "${RED}${BOLD}[ERROR]${NC} $1"; }
 
+ORIGINAL_DIR=$(pwd)
+SUCCESS=0
+
+cleanup() {
+    if [ "$SUCCESS" -eq 0 ]; then
+        echo -e "${RED}${BOLD}[FATAL]${NC} El script no terminó correctamente. Deshaciendo..."
+        if [ -n "$PROJECT_NAME" ] && [ -d "$ORIGINAL_DIR/$PROJECT_NAME" ]; then
+            log_warn "Borrando directorio a medio crear: $PROJECT_NAME"
+            rm -rf "$ORIGINAL_DIR/$PROJECT_NAME"
+        fi
+        exit 1
+    fi
+}
+
+trap cleanup EXIT INT TERM
+
+check_dependencies() {
+    local missing=0
+    for cmd in bun git; do
+        if ! command -v "$cmd" &>/dev/null; then
+            log_error "Falta dependencia crítica: $cmd"
+            missing=1
+        fi
+    done
+    if [ "$missing" -eq 1 ]; then
+        log_error "Instalá las dependencias antes de iniciar el búnker."
+        # No disparamos limpieza destructiva porque aún no se creó la carpeta.
+        SUCCESS=1 
+        exit 1
+    fi
+}
+
+# 0. Pre-flight
+check_dependencies
+# Restauramos trap mode
+SUCCESS=0
+
 # 1. Validar nombre del proyecto
 PROJECT_NAME=$1
 if [[ -z "$PROJECT_NAME" ]]; then
     log_error "Falta el nombre del proyecto. Uso: ./init-project.sh <nombre>"
+    SUCCESS=1
     exit 1
 fi
+
+
+# 1.5. Prompt de Selección de Agente de IA
+log_info "Seleccioná el Agente de IA principal para este proyecto:"
+echo "1) OpenCode"
+echo "2) Claude Code (Anthropic)"
+echo "3) Cursor"
+echo "4) Gemini CLI"
+echo "5) Todos (Inyectar para todos los nombrados)"
+
+read -r -p "Elegí una opción [1-5]: " AGENT_OPTION
+
+case $AGENT_OPTION in
+    1) TARGET_AGENT="opencode" ;;
+    2) TARGET_AGENT="claude" ;;
+    3) TARGET_AGENT="cursor" ;;
+    4) TARGET_AGENT="gemini" ;;
+    5) TARGET_AGENT="all" ;;
+    *) log_warn "Opción inválida. Usando OpenCode por defecto."; TARGET_AGENT="opencode" ;;
+esac
+log_success "Agente seleccionado: $TARGET_AGENT"
 
 # 2. Verificar estado con tu repo personal (Origin)
 TOOLBOX_DIR="/Users/sebailla/Documents/Proyectos/gentleman-toolbox"
@@ -199,18 +258,24 @@ cat > AGENTS.md <<'EOF'
 - \`gentle-ai-modular-architecture\`: Detailed rules for the Modular Vertical Slicing pattern.
 EOF
 
-# 9b. Sincronizar multiverso de IA (Provider-Agnostic)
-log_info "Sincronizando reglas para todos los agentes (Cursor, Claude, Gemini, Windsurf)..."
-cp AGENTS.md CLAUDE.md
-cp AGENTS.md GEMINI.md
-cp AGENTS.md .cursorrules
-cp AGENTS.md .windsurfrules
-
-# 11b. Instalar Skill de Documentación de Usuario
-log_info "Instalando skill de documentación de usuario..."
-mkdir -p .agent/skills/documentar-specs-usuario
-mkdir -p .agent/rules
-cat > .agent/rules/agent-settings.md <<'EOF'
+# 9b. Configurar reglas de Inteligencia Artificial Dinámicamente
+setup_agent_rules() {
+    log_info "Sincronizando reglas exclusivas para el agente seleccionado: $TARGET_AGENT..."
+    
+    if [ "$TARGET_AGENT" = "claude" ] || [ "$TARGET_AGENT" = "all" ]; then
+        cp AGENTS.md CLAUDE.md
+    fi
+    if [ "$TARGET_AGENT" = "gemini" ] || [ "$TARGET_AGENT" = "all" ]; then
+        cp AGENTS.md GEMINI.md
+    fi
+    if [ "$TARGET_AGENT" = "cursor" ] || [ "$TARGET_AGENT" = "all" ]; then
+        cp AGENTS.md .cursorrules
+    fi
+    
+    log_info "Instalando skill de documentación de usuario..."
+    mkdir -p .agent/skills/documentar-specs-usuario
+    mkdir -p .agent/rules
+    cat > .agent/rules/agent-settings.md <<'EOF_AGENT_SETTINGS'
 # Agent Settings & Project Preferences
 
 ## Communication
@@ -222,15 +287,19 @@ cat > .agent/rules/agent-settings.md <<'EOF'
 - **Cero Suposiciones**: Nunca te quedes con dudas ni infieras reglas de arquitectura, decisiones o qué requiere el usuario. Evalúa e interroga metódicamente antes de proceder.
 
 ## UI/UX Design Workflow
-- **Standard**: La única fuente de verdad para toda tarea referida a la UI, UX o diseño visual es la carpeta \`design-md\`.
-- **Action**: Siempre que debas crear o modificar una interfaz, básate obligatoria y estrictamente en la documentación y los assets presentes en \`design-md\`. Nunca inventes estilos por fuera de ese directorio.
+- **Standard**: La única fuente de verdad para toda tarea referida a la UI, UX o diseño visual es la carpeta `design-md`.
+- **Action**: Siempre que debas crear o modificar una interfaz, básate obligatoria y estrictamente en la documentación y los assets presentes en `design-md`. Nunca inventes estilos por fuera de ese directorio.
 
 ## Specs Workflow
 - **Action**: After completing a 'feat', use the 'documentar-specs-usuario' skill to document the change in /specs.
 
 ## Plannings & Design Workflow
 - **Action**: Before writing code for a new feature, use the 'documentar-plan-diseno' skill to detail the architecture in /plans and UI specs in /designs.
-EOF
+EOF_AGENT_SETTINGS
+}
+
+setup_agent_rules
+
 
 # 11b. Instalar Skills de Documentación de Usuario y Planificación
 log_info "Instalando skills de documentación (Usuario y Planificación)..."
@@ -272,30 +341,29 @@ description: Genera y almacena documentos de planificación técnica y diseño U
 EOF
 
 # 10. Configurar Husky, Commitlint y Versionado
-log_info "Finalizando configuración de Husky y Commitlint..."
-bunx husky init
+setup_husky_and_commitlint() {
+    log_info "Finalizando configuración de Husky y Commitlint..."
+    bunx husky init
 
-# Añadir configuración para commitlint
-cat > commitlint.config.mjs <<'EOF'
+    # Añadir configuración para commitlint
+    cat > commitlint.config.mjs <<'EOF_COMMITLINT'
 export default { extends: ['@commitlint/config-conventional'] };
-EOF
+EOF_COMMITLINT
 
-# Agregar hook commit-msg para obligar conventional commits
-cat > .husky/commit-msg <<'EOF'
+    # Agregar hook commit-msg para obligar conventional commits
+    cat > .husky/commit-msg <<'EOF_COMMITMSG'
 bunx --no -- commitlint --edit $1
-EOF
+EOF_COMMITMSG
 
-# Agregar validación estricta de nombres de ramas (pre-push)
-cat > .husky/pre-push <<'EOF'
+    # Agregar validación estricta de nombres de ramas (pre-push)
+    cat > .husky/pre-push <<'EOF_PREPUSH'
 #!/usr/bin/env bash
 LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 VALID_REGEX="^(feat|fix|hotfix|chore|docs|refactor|test)\/[a-z0-9-]+$"
 
 # EXCEPCIÓN: Permitir el primer push de inicialización si es necesario
-# Pero por regla general, main es inalterable.
 if [[ "$LOCAL_BRANCH" == "main" || "$LOCAL_BRANCH" == "master" ]]; then
     echo "❌ ERROR: La rama 'main' es un santuario. No podés pushear directo acá."
-    echo "👉 El flujo correcto es: Tarea -> PR a develop -> PR a main."
     exit 1
 fi
 
@@ -305,19 +373,21 @@ fi
 
 if [[ ! $LOCAL_BRANCH =~ $VALID_REGEX ]]; then
     echo "❌ ERROR Arquitectónico: La rama '$LOCAL_BRANCH' es un cambalache."
-    echo "👉 Formato exigido: tipo/nombre-en-kebab-case (ej: feat/login-ui, fix/header-roto)"
-    echo "👉 Tipos válidos: feat, fix, hotfix, chore, docs, refactor, test"
+    echo "👉 Formato exigido: tipo/nombre-en-kebab-case"
     exit 1
 fi
-EOF
-chmod +x .husky/pre-push
+EOF_PREPUSH
+    chmod +x .husky/pre-push
 
-# Agregar lint-staged al pre-commit
-cat > .husky/pre-commit <<'EOF'
+    # Agregar lint-staged al pre-commit
+    cat > .husky/pre-commit <<'EOF_PRECOMMIT'
 bun test
 bunx lint-staged
 gga run
-EOF
+EOF_PRECOMMIT
+}
+
+setup_husky_and_commitlint
 # 11. Configurar package.json scripts
 log_info "Actualizando scripts en package.json..."
 # Bun no tiene un equivalente exacto a 'npm pkg set', mantenemos npm para edición de metadatos o usamos sed/node
@@ -358,6 +428,25 @@ else
     mkdir -p design-md
 fi
 
+# 13.5 Limpiar el Git Tracking (.gitignore enriquecido)
+log_info "Enriqueciendo .gitignore..."
+cat >> .gitignore <<EOF_GITIGNORE
+
+# =========================
+# Gentleman Ecosistema
+# =========================
+.agent/
+.gga/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.cursorrules
+.opencode-rules
+plans/
+specs/
+designs/
+EOF_GITIGNORE
+
 # 14. ¡DÍA CERO! Primer commit, versión y switch a develop
 log_info "Ejecutando ritual de Día Cero..."
 
@@ -396,3 +485,6 @@ log_info "Pasos siguientes:"
 echo "  1. cd $PROJECT_NAME"
 echo "  2. bun install"
 echo "  3. Empezá una tarea con: git checkout -b feat/nombre-tarea"
+
+# FIN FELIZ: desactivar la trampa de borrado
+SUCCESS=1
