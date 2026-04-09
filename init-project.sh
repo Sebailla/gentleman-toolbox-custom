@@ -376,7 +376,7 @@ git commit -m "chore: initial project setup (Gentleman Búnker)" -q --no-verify
 
 # Generar versión v1.0.0 inicial
 if command -v bunx &>/dev/null; then
-    bunx standard-version --first-release -q
+    bunx standard-version --first-release -q --no-verify
 else
     log_warn "Standard-version no disponible, saltando versionado inicial."
 fi
