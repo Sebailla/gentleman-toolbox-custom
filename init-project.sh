@@ -157,7 +157,7 @@ EOF
 
 # 9. Crear AGENTS.md base (Reglas para la IA)
 log_info "Generando AGENTS.md base..."
-cat > AGENTS.md <<EOF
+cat > AGENTS.md <<'EOF'
 # Project Rules (Gentleman Standard)
 
 ## Architecture: Modular Vertical Slicing
@@ -210,7 +210,7 @@ cp AGENTS.md .windsurfrules
 log_info "Instalando skill de documentación de usuario..."
 mkdir -p .agent/skills/documentar-specs-usuario
 mkdir -p .agent/rules
-cat > .agent/rules/agent-settings.md <<EOF
+cat > .agent/rules/agent-settings.md <<'EOF'
 # Agent Settings & Project Preferences
 
 ## Communication
@@ -360,8 +360,19 @@ fi
 
 # 14. ¡DÍA CERO! Primer commit, versión y switch a develop
 log_info "Ejecutando ritual de Día Cero..."
+
+# Verificar configuración de Git para evitar errores en el primer commit
+if [ -z "$(git config --global user.email)" ]; then
+    log_warn "Git user.email no configurado globalmente. Seteando gentleman@bunker.com para este repo."
+    git config user.email "gentleman@bunker.com"
+fi
+if [ -z "$(git config --global user.name)" ]; then
+    log_warn "Git user.name no configurado globalmente. Seteando Gentleman-User para este repo."
+    git config user.name "Gentleman-User"
+fi
+
 git add .
-git commit -m "chore: initial project setup (Gentleman Búnker)" -q
+git commit -m "chore: initial project setup (Gentleman Búnker)" -q --no-verify
 
 # Generar versión v1.0.0 inicial
 if command -v bunx &>/dev/null; then
