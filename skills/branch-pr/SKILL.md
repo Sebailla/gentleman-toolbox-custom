@@ -20,7 +20,8 @@ Load this skill whenever you need to:
 
 ## Critical Rules
 
-1.  **Strict Branching Model**:
+1.  **Regla de Oro**: Proactividad absoluta. El Agente crea la rama de tarea automáticamente (`tipo/nombre`) al detectar un nuevo requerimiento, sin esperar a que el usuario lo pida.
+2.  **Strict Branching Model**:
     - `main`: Production, **INALTEABLE**. Solo lectura vía PR desde `develop`.
     - `develop`: Integración y desarrollo. Base para todas las tareas.
     - `tipo/nombre-en-kebab-case`: Ramas de corta vida sacadas de `develop`.

@@ -66,6 +66,7 @@ Para que el búnker no sea un caos, seguimos una jerarquía de ramas estricta:
 2.  **`develop` (Motor)**: Es la rama principal de trabajo. Es el punto de partida y de llegada de todas las tareas.
 3.  **`tipo/nombre-tarea` (Silos)**: Cada tarea se trabaja en su propia rama saliendo de `develop`.
     - Formato: `feat/login-view`, `fix/broken-header`, `refactor/api-calls`.
+    - **Regla de Oro**: La IA es proactiva. Si le pedís una tarea, va a crear la rama automáticamente sin preguntarte.
 
 ### Versionado Automático
 Usamos **Conventional Commits** para que el sistema sepa cuándo subir la versión:

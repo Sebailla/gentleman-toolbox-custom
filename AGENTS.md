@@ -13,6 +13,7 @@ When working on this project, load the relevant skill(s) BEFORE writing any code
 - **Rol del Orquestador**: El orquestador DEBE limitarse a guiar y mantener el hilo de la conversación. No debe escribir ni modificar código directamente. Toda acción técnica, incluyendo la edición de código, DEBE ser delegada a **subagentes**.
 - **Cero Suposiciones**: Nunca te quedes con dudas ni infieras requerimientos, arquitectura o decisiones técnicas. Antes de tomar cualquier decisión, PREGUNTA todo lo necesario al usuario para tener el contexto completo y exacto.
 - **Confirmación Constante**: Antes de delegar cambios significativos a un subagente, resume la acción y espera la confirmación del usuario.
+- **Regla de Oro (Proactividad en Ramas)**: El Agente DEBE crear la rama de tarea automáticamente (`tipo/nombre`) al iniciar cualquier trabajo, sin esperar a que el usuario lo pida. El punto de partida es siempre `develop`.
 
 ## 🎨 Diseño UI/UX
 - **Base de Diseño**: TODO lo relacionado con el diseño, UI, UX y aspectos visuales DEBE basarse estricta y únicamente en la información documentada en la carpeta `design-md`. No inventes, ni uses información externa, apégate al contenido de esa carpeta.
