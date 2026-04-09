@@ -58,18 +58,22 @@ Cuando lanzás un comando `/sdd-*`, la IA utiliza el protocolo **MCP (Model Cont
 
 ---
 
-## 🚀 3.5. Git Workflow y Arquitectura de Release
+## 🌿 3.5. Gestión de Ramas y Versiones (GitFlow Simplificado)
 
-Tu búnker viene con un pipeline de CI/CD local y remoto nivel Dios:
+Para que el búnker no sea un caos, seguimos una jerarquía de ramas estricta:
 
-1. **Ramas Estrictas (Husky pre-push)**
-No podés pushear ramas con nombres aleatorios. El sistema exige el formato `tipo/nombre-en-kebab-case` (ej: `feat/dashboard`, `fix/navbar`). Si no, te rebota el push.
+1.  **`main` (Santuario)**: Es el reflejo exacto de lo que está en producción. **PROHIBIDO** pushear cambios directos a esta rama. Solo se actualiza vía Pull Request desde `develop`. Al fusionar en `main`, se dispara el versionado automático (`vX.X.X`).
+2.  **`develop` (Motor)**: Es la rama principal de trabajo. Es el punto de partida y de llegada de todas las tareas.
+3.  **`tipo/nombre-tarea` (Silos)**: Cada tarea se trabaja en su propia rama saliendo de `develop`.
+    - Formato: `feat/login-view`, `fix/broken-header`, `refactor/api-calls`.
 
-2. **Commits Profesionales (Commitlint)**
-Todos tus commits deben seguir la convención de *Conventional Commits* (`feat: ...`, `fix: ...`). Husky intercepta cualquier commit basura y te obliga a corregirlo.
+### Versionado Automático
+Usamos **Conventional Commits** para que el sistema sepa cuándo subir la versión:
+- `feat:` -> Sube versión **MINOR** (ej. 1.0.0 -> 1.1.0).
+- `fix:` -> Sube versión **PATCH** (ej. 1.1.0 -> 1.1.1).
+- `feat/fix!:` (con el signo de exclamación) -> Sube versión **MAJOR** (ej. 1.1.1 -> 2.0.0).
 
-3. **Release Automático (GitHub Actions)**
-No más bumps manuales de versión. Al hacer merge de tu PR a la rama `main`, un action de GitHub (`.github/workflows/release.yml`) ejecuta `bun run release`. Esto suma al Versionado Semántico (SemVer), actualiza el `CHANGELOG.md` resumiendo tus commits, y genera un Tag automático.
+Cada vez que el script de inicialización crea un búnker, realiza un "Ritual de Día Cero": crea el primer commit en `main`, le clava el tag `v1.0.0` y te deja automáticamente en `develop` para empezar a laburar.
 
 ## 🏗️ 3.6. Arquitectura Modular (Modular Vertical Slicing)
 

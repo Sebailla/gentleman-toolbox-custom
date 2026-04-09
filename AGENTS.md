@@ -17,6 +17,26 @@ When working on this project, load the relevant skill(s) BEFORE writing any code
 ## 🎨 Diseño UI/UX
 - **Base de Diseño**: TODO lo relacionado con el diseño, UI, UX y aspectos visuales DEBE basarse estricta y únicamente en la información documentada en la carpeta `design-md`. No inventes, ni uses información externa, apégate al contenido de esa carpeta.
 
+## 🚀 Workflow
+
+1.  **Prepárate**: Sincronizá `develop` y salí de ahí.
+    ```bash
+    git checkout develop && git pull
+    ```
+
+2.  **Nueva Tarea**: Creá una rama siguiendo la convención corporativa (`tipo/nombre-tarea`).
+    ```bash
+    git checkout -b <tipo>/<nombre-tarea>
+    ```
+
+3.  **Implementación**: Laburá siguiendo el patrón modular y los specs asociados.
+
+4.  **Confirmación**: Commiteá usando *Conventional Commits*. No agregues AI attribution.
+
+5.  **Integración**: Abrí un Pull Request contra la rama `develop`. 
+
+6.  **Release**: Los PRs a `main` solo se realizan desde `develop` para subir a producción y generar el tag de versión (tag automático).
+
 ## Skills
 
 | Skill | Trigger | Path |

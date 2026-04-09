@@ -58,8 +58,8 @@ mkdir -p "$PROJECT_NAME"
 cd "$PROJECT_NAME"
 
 # 3. Inicializar repositorio Git
-log_info "Inicializando Git..."
-git init -q
+log_info "Inicializando Git en rama 'main'..."
+git init -q -b main
 
 # 4. Crear Next.js App (Gentleman Stack)
 log_info "Lanzando create-next-app (Next.js 16, TS, Tailwind v4, App Router)..."
@@ -290,7 +290,15 @@ cat > .husky/pre-push <<'EOF'
 LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 VALID_REGEX="^(feat|fix|hotfix|chore|docs|refactor|test)\/[a-z0-9-]+$"
 
-if [[ "$LOCAL_BRANCH" == "main" || "$LOCAL_BRANCH" == "master" || "$LOCAL_BRANCH" == "develop" ]]; then
+# EXCEPCIÓN: Permitir el primer push de inicialización si es necesario
+# Pero por regla general, main es inalterable.
+if [[ "$LOCAL_BRANCH" == "main" || "$LOCAL_BRANCH" == "master" ]]; then
+    echo "❌ ERROR: La rama 'main' es un santuario. No podés pushear directo acá."
+    echo "👉 El flujo correcto es: Tarea -> PR a develop -> PR a main."
+    exit 1
+fi
+
+if [[ "$LOCAL_BRANCH" == "develop" ]]; then
     exit 0
 fi
 
@@ -349,11 +357,30 @@ else
     mkdir -p design-md
 fi
 
+# 14. ¡DÍA CERO! Primer commit, versión y switch a develop
+log_info "Ejecutando ritual de Día Cero..."
+git add .
+git commit -m "chore: initial project setup (Gentleman Búnker)" -q
+
+# Generar versión v1.0.0 inicial
+if command -v bunx &>/dev/null; then
+    bunx standard-version --first-release -q
+else
+    log_warn "Standard-version no disponible, saltando versionado inicial."
+fi
+
+# Crear y saltar a develop
+log_info "Creando rama 'develop' y saltando a ella..."
+git checkout -b develop -q
+
 log_success "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 log_success "  ¡PROYECTO '$PROJECT_NAME' LISTO PARA LA GUERRA!"
 log_success "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log_info "Estado actual:"
+echo "  - Rama: develop (Lista para laburar)"
+echo "  - Versión: v1.0.0 (Tag creado en main)"
+echo "  - Main: Protegida y sincronizada"
 log_info "Pasos siguientes:"
 echo "  1. cd $PROJECT_NAME"
 echo "  2. bun install"
-echo "  3. Configura tu .env con la URL de la base de datos"
-echo "  4. Empezá a laburar con el Guardian Angel cuidándote la espalda."
+echo "  3. Empezá una tarea con: git checkout -b feat/nombre-tarea"
