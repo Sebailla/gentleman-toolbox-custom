@@ -86,6 +86,17 @@ case $AGENT_OPTION in
 esac
 log_success "Agente seleccionado: $TARGET_AGENT"
 
+# 1.6. Prompt de Graphify (Knowledge Graph)
+log_info "¿Querés dotar a tu proyecto de un Grafo de Conocimiento (Graphify)? (Python 3 requerido)"
+read -r -p "[s/n]: " USE_GRAPHIFY_PROMPT
+if [[ "$USE_GRAPHIFY_PROMPT" =~ ^[Ss]$ ]]; then
+    USE_GRAPHIFY="yes"
+    log_success "Graphify habilitado. Preparando instalación..."
+else
+    USE_GRAPHIFY="no"
+    log_warn "Graphify desactivado (salteando)."
+fi
+
 # 2. Verificar estado con tu repo personal (Origin)
 TOOLBOX_DIR="/Users/sebailla/Documents/Proyectos/gentleman-toolbox"
 if [ -d "$TOOLBOX_DIR/.git" ]; then
@@ -247,6 +258,9 @@ cat > AGENTS.md <<'EOF'
 
 ## 🎨 Diseño UI/UX
 - **Base de Diseño**: TODO lo relacionado con el diseño, UI, UX y aspectos visuales DEBE basarse estricta y únicamente en la información documentada en la carpeta \`design-md\`. No inventes, ni uses información externa, apégate al contenido de esa carpeta.
+
+## 🧠 Knowledge Graph (Graphify)
+- **Protocolo de Lectura**: Si existe el directorio \`graphify-out/\`, el agente DEBE leer el archivo \`graphify-out/GRAPH_REPORT.md\` OBLIGATORIAMENTE antes de iniciar búsquedas o modificar arquitectura, para entender la jerarquía, relaciones y God Nodes del proyecto.
 
 ## Quality & Workflow
 - All new features must have unit tests (Vitest).
@@ -414,6 +428,29 @@ else
     log_warn "gentle-ai no encontrado. Corré 'gentle-ai install' manualmente."
 fi
 
+# 12b. Instalar Graphify (Opcional)
+if [ "$USE_GRAPHIFY" = "yes" ]; then
+    log_info "Integrando Graphify al entorno..."
+    if command -v pip3 &>/dev/null; then
+        log_info "Instalando graphifyy silenciosamente..."
+        pip3 install -q graphifyy || log_warn "Falló la instalación de graphifyy vía pip3."
+        
+        if command -v graphify &>/dev/null; then
+            if [ "$TARGET_AGENT" = "all" ]; then
+                log_warn "Graphify requiere especificar plataforma de a una. Instalalo a mano: 'graphify install --platform <plataforma>'"
+            else
+                log_info "Configurando pre-hooks de Graphify para: $TARGET_AGENT..."
+                graphify install --platform "$TARGET_AGENT" || log_warn "Falló la configuración local de graphify."
+                log_success "Graphify instalado. Ejecutá '/graphify .' cuando quieras generar el grafo."
+            fi
+        else
+            log_warn "Python instaló el paquete, pero 'graphify' no está en el PATH."
+        fi
+    else
+        log_warn "pip3 no encontrado en el sistema. Salteando instalación empotrada."
+    fi
+fi
+
 # 13. Copiar documentación de arquitectura y diseño
 if [ -f "$TOOLBOX_DIR/ARCHITECTURE_SKILLS.md" ]; then
     log_info "Copiando ARCHITECTURE_SKILLS.md..."
@@ -446,6 +483,7 @@ plans/
 specs/
 designs/
 design-md/
+graphify-out/
 EOF_GITIGNORE
 
 # 14. ¡DÍA CERO! Primer commit, versión y switch a develop
