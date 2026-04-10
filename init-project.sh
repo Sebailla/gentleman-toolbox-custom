@@ -483,7 +483,15 @@ plans/
 specs/
 designs/
 design-md/
+# graphify outputs (generated on demand, not tracked)
 graphify-out/
+
+# graphify temporary files
+.graphify_*
+.graphify_analysis.json
+.graphify_cached.json
+.graphify_labels.json
+.graphify_uncached.txt
 EOF_GITIGNORE
 
 # 14. ¡DÍA CERO! Primer commit, versión y switch a develop
