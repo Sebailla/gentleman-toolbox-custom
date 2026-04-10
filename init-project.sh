@@ -445,6 +445,7 @@ GEMINI.md
 plans/
 specs/
 designs/
+design-md/
 EOF_GITIGNORE
 
 # 14. ¡DÍA CERO! Primer commit, versión y switch a develop
