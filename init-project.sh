@@ -121,10 +121,10 @@ log_info "Inicializando Git en rama 'main'..."
 git init -q -b main
 
 # 4. Crear Next.js App (Gentleman Stack)
-log_info "Lanzando create-next-app (Next.js 16, TS, Tailwind v4, App Router)..."
+log_info "Lanzando create-next-app (Next.js @latest, TS, Tailwind v4, App Router)..."
 # Usamos --no-install para controlar nosotros las dependencias
 # Usamos --yes para evitar promts interactivos (ej: React Compiler)
-bunx create-next-app@16 . \
+bunx create-next-app@latest . \
     --typescript \
     --tailwind \
     --eslint \
@@ -136,14 +136,14 @@ bunx create-next-app@16 . \
     --yes
 
 # 5. Instalar dependencias core del stack
-log_info "Instalando dependencias del Gentleman Stack..."
-bun add @prisma/client lucide-react clsx tailwind-merge date-fns zod \
-    react-hot-toast ioredis bcryptjs jsonwebtoken
+log_info "Instalando dependencias del Gentleman Stack (últimas versiones)..."
+bun add @prisma/client@latest lucide-react@latest clsx@latest tailwind-merge@latest date-fns@latest zod@latest \
+    react-hot-toast@latest ioredis@latest bcryptjs@latest jsonwebtoken@latest
 
-bun add -d prisma vitest @testing-library/react @testing-library/dom \
-    jsdom @playwright/test husky lint-staged tsx @types/node @types/react \
-    @types/react-dom @types/bcryptjs @types/jsonwebtoken \
-    @commitlint/cli @commitlint/config-conventional standard-version
+bun add -d prisma@latest vitest@latest @testing-library/react@latest @testing-library/dom@latest \
+    jsdom@latest @playwright/test@latest husky@latest lint-staged@latest tsx@latest @types/node@latest @types/react@latest \
+    @types/react-dom@latest @types/bcryptjs@latest @types/jsonwebtoken@latest \
+    @commitlint/cli@latest @commitlint/config-conventional@latest standard-version@latest
 
 # 6. Inicializar Prisma (PostgreSQL por defecto)
 log_info "Inicializando Prisma..."
@@ -445,6 +445,7 @@ GEMINI.md
 plans/
 specs/
 designs/
+design-md/
 EOF_GITIGNORE
 
 # 14. ¡DÍA CERO! Primer commit, versión y switch a develop
