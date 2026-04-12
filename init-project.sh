@@ -223,6 +223,38 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           bun run release
           git push --follow-tags origin main
+
+  health-gate:
+    name: "🛡️ Architecture Health Check"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Fix rules
+        run: npx gentleman-toolbox doctor --fix
+      - name: Check Score
+        run: npx gentleman-toolbox status --score
+EOF
+
+# 8.7. Configurar DX (VSCode/OpenCode)
+log_info "Configurando experiencia de desarrollador (VSCode)..."
+mkdir -p .vscode
+cat > .vscode/settings.json <<'EOF'
+{
+  "explorer.exclude": {
+    "**/.agent": true,
+    "**/.gga": true,
+    "**/node_modules": true,
+    "**/plans": true,
+    "**/specs": true,
+    "**/.docs": true
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.associations": {
+    "*.md": "markdown"
+  }
+}
 EOF
 
 # 9. Crear AGENTS.md base (Reglas para la IA)
@@ -248,6 +280,44 @@ cat > AGENTS.md <<'EOF'
 - **Idioma del Código**: Inglés (variables, funciones, clases).
 - **Idioma de Comentarios y Documentación**: Español.
 - **Comunicación del Agente**: Español Rioplatense (voseo, terminología técnica clara pero directa).
+EOF
+
+# 9.5. Generar README Premium
+log_info "Generando README.md de Arquitecto..."
+cat > README.md <<EOF
+# 🎖️ [Nombre del Proyecto] - Gentleman Bunker
+
+Este proyecto ha sido forjado usando el **Gentleman Toolbox**. No es solo código; es una fortaleza arquitectónica diseñada para la máxima escalabilidad y mantenibilidad.
+
+## 🏗️ Arquitectura: Modular Vertical Slicing
+Este proyecto sigue un patrón de **Slicing Vertical** donde cada dominio vive en su propio búnker (\`src/modules/\`).
+
+### Estructura de un Módulo
+- **components/**: UI pura del dominio.
+- **services/**: Lógica de negocio y acceso a datos (Prisma).
+- **actions.ts**: Orquestación y validación (Zod) via Server Actions.
+- **types.ts**: Tipos de dominio específicos.
+- **index.ts**: API pública del módulo.
+
+## 🛠️ Herramientas de Autonomía (Gentle AI)
+El búnker está vivo. Podés usar estos comandos para acelerar:
+
+| Comando | Acción |
+| :--- | :--- |
+| \`gentle-ai status --score\` | Mide tu salud arquitectónica (AHI). |
+| \`gentle-ai plan --feature="X"\` | Genera el scaffolding de una nueva feature. |
+| \`gentle-ai drive --test="X"\` | Inicia el loop de TDD autónomo. |
+| \`gentle-ai briefing\` | Prepara el reporte de traspaso. |
+
+## 🛡️ Gobernanza
+- **Git Hooks**: El **Centinela** valida cada commit. No se permiten ramas fuera de estándar ni cambios que rompan la salud del proyecto.
+- **CI Grade**: GitHub Actions valida el ARCH Health Index en cada PR.
+
+---
+*Forjado con pasión por Gentleman Programming.*
+EOF
+
+cat >> AGENTS.md <<'EOF'
 - **Revisiones**: El feedback del Guardian Angel debe ser siempre en español.
 
 ## 🛡️ Protocolo de Actuación (MANDATORIO)
@@ -399,6 +469,12 @@ bun test
 bunx lint-staged
 gga run
 EOF_PRECOMMIT
+
+    # Instalar el Centinela (Gentle AI Git Hooks)
+    if command -v gentle-ai &>/dev/null; then
+        log_info "Activando el Centinela (Pre-commit Health Check)..."
+        gentle-ai sentinel install
+    fi
 }
 
 setup_husky_and_commitlint
@@ -521,17 +597,33 @@ fi
 log_info "Creando rama 'develop' y saltando a ella..."
 git checkout -b develop -q
 
+log_info "Main: Protegida y sincronizada"
+
+# Banner de Gloria
 log_success "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-log_success "  ¡PROYECTO '$PROJECT_NAME' LISTO PARA LA GUERRA!"
+echo -e "\033[1;36m"
+echo "   _____ ______ _   _ _______ _      ______ __  __          _   _ "
+echo "  / ____|  ____| \ | |__   __| |    |  ____|  \/  |   /\   | \ | |"
+echo " | |  __| |__  |  \| |  | |  | |    | |__  | \  / |  /  \  |  \| |"
+echo " | | |_ |  __| | . \` |  | |  | |    |  __| | |\/| | / /\ \ | . \` |"
+echo " | |__| | |____| |\  |  | |  | |____| |____| |  | |/ ____ \| |\  |"
+echo "  \_____|______|_| \_|  |_|  |______|______|_|  |_/_/    \_\_| \_|"
+echo -e "\033[0m"
+log_success "          BÚNKER DESPLEGADO CON ÉXITO - PIPI CUCU"
 log_success "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-log_info "Estado actual:"
-echo "  - Rama: develop (Lista para laburar)"
-echo "  - Versión: v1.0.0 (Tag creado en main)"
-echo "  - Main: Protegida y sincronizada"
+
 log_info "Pasos siguientes:"
 echo "  1. cd $PROJECT_NAME"
 echo "  2. bun install"
 echo "  3. Empezá una tarea con: git checkout -b feat/nombre-tarea"
+
+# 15. Diagnóstico y Reparación Final
+if command -v gentle-ai &>/dev/null; then
+    log_info "Corriendo diagnóstico y reparación proactiva del búnker..."
+    gentle-ai doctor --fix
+    log_info "Optimizando contexto inicial (Distill)..."
+    gentle-ai distill
+fi
 
 # FIN FELIZ: desactivar la trampa de borrado
 SUCCESS=1

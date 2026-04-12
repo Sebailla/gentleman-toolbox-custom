@@ -118,7 +118,55 @@ Estas capacidades permiten el flujo de **Spec-Driven Development**.
 - **`branch-pr`**: Automatiza la creación de ramas y Pull Requests siguiendo convenciones.
 - **`issue-creation`**: Transforma bugs o requerimientos en Issues de GitHub bien documentados.
 
----
+### E. Autonomía y Estrategia (La Evolución)
+Estas son las nuevas capacidades integradas para un búnker inteligente.
+
+#### 🕹️ Comandos CLI (Explícitos)
+Correlos en tu terminal o pedile a la IA que los ejecute.
+
+| Comando | Descripción | Cuándo usarlo |
+| :--- | :--- | :--- |
+| `gentle-ai distill` | Filtra el contexto del proyecto. | Al inicio de sesión. |
+| `gentle-ai doctor --fix` | Diagnostica y repara el búnker. | Si algo falla o faltan reglas. |
+| `gentle-ai drive --test="X"` | Inicia loop autónomo de corrección. | Si un test no pasa. |
+| `gentle-ai learn` | Extrae instintos de la sesión. | Al terminar tu día. |
+| `gentle-ai sentinel install` | Activa el Centinela (Pre-commit). | En cada nuevo repo. |
+| `gentle-ai status --score` | Calcula el AHI (Salud Arquitectónica). | Para medir deuda técnica. |
+| `gentle-ai briefing` | Genera reporte de traspaso. | Para cambiar de agente/sesión. |
+| `gentle-ai plan --feature="X"` | Genera scaffolding modular. | Para empezar un módulo nuevo. |
+| `gentle-ai judge <target>` | Inicia el Juicio Adversario. | Antes de un merge crítico. |
+| `gentle-ai blueprint` | Genera mapa de dependencias. | Para auditar el acoplamiento. |
+| `gentle-ai refactor --instincts` | Aplica tus gustos al código viejo. | Para evitar la podredumbre técnica. |
+| `gentle-ai pr-fix <url>` | Corrige comentarios de PR. | Para automatizar el feedback de GitHub. |
+| `gentle-ai console` | Lanza el dashboard interactivo. | Para gestión visual del búnker. |
+| `gentle-ai sync` | Sincroniza tácticas globales. | Para mantener el búnker actualizado. |
+
+#### 🧠 Skills de Contexto (Implícitos)
+La IA los carga automáticamente según la necesidad. No necesitás invocarlos, están ahí para protegerte.
+- **`go-reviewer` / `typescript-reviewer`**: Opinión experta durante el `/sdd-verify`.
+- **`gentleman-coach`**: Tu mentor senior. Te frena si hacés "cambalache".
+- **`gentleman-storyteller`**: Redacta tus PRs con tono profesional y contexto real.
+- **`gentleman-driver`**: Lógica de "pensamiento" para el loop de arreglos.
+- **`judgment-day`**: Protocolo de doble revisión ciega.
+- **`gentleman-blueprint`**: Traductor de grafos a visión de arquitecto.
+- **`instinct-refactor`**: El motor de evolución del proyecto.
+- **`pr-fix`**: El brazo ejecutor que limpia tus Pull Requests.
+- **`gentleman-console`**: El cerebro visual del sistema.
+- **`fleet-sync`**: El enlace de comunicación con el Cuartel General.
+
+### G. Arquitecto Supremo (Techo de Cristal)
+Este es el estado final de la evolución. Tu búnker está conectado al mundo.
+
+- **`pr-fix`**: No pierdas tiempo corrigiendo estilos o sugerencias menores en GitHub. Dejá que el búnker lea los comentarios de tus compañeros y los arregle por vos.
+- **`console`**: Si te abruman los comandos, tirá un `console`. Tenés todo el estado de tu arquitectura, tus instintos y tus acciones rápidas en un dashboard "pipi cucu".
+- **`sync`**: La inteligencia artificial evoluciona cada día. Corré `sync` para asegurarte de que tu búnker local esté usando las últimas reglas y patrones descubiertos por la comunidad Gentleman.
+
+### F. Arsenal de Elite (Nivel Pipi Cucu)
+Estas son herramientas de alta gama para proyectos que no pueden fallar.
+
+- **`judge`**: Si una feature es muy compleja, pedile un juicio. No te conformes con una opinión; exigí consenso.
+- **`blueprint`**: Tiralo una vez por semana. Si las flechas se cruzan mucho, tenés un problema de diseño.
+- **`refactor --instincts`**: Los proyectos mueren porque dejan de parecerse a lo que el autor quería. Este comando mantiene viva tu esencia en cada archivo.
 
 ## 😇 5. El Guardian Angel (GGA)
 
@@ -259,7 +307,18 @@ bunx prisma studio
 
 ---
 
-## 📜 11. Filosofía y Protocolo del Gentleman
+## 📜 12. Optimización para OpenCode
+
+Este Toolbox está diseñado para brillar con **OpenCode**, ya sea que uses modelos de Anthropic (Claude) o modelos optimizados como **Minimax-m2.5** o **DeepSeek**.
+
+### Reglas para OpenCode
+1.  **Contexto es Rey**: Usá siempre `gentle-ai distill` antes de empezar. Los modelos locales/específicos agradecen que no les tires basura.
+2.  **Instintos Locales**: Los instintos en `.gentleman/instincts.md` son la clave para que tu IA no se olvide de tus preferencias de tipado o estilos.
+3.  **Harness Residencial**: El `sentinel` es obligatorio. Como a veces saltamos de herramienta en herramienta, el Centinela asegura que el estándar se mantenga sin importar el agente.
+
+---
+
+## 📜 13. Filosofía y Protocolo del Gentleman
 - **CONCEPTS > CODE**: Entendé por qué usás Atomic Design antes de crear un átomo.
 - **SOLID FOUNDATIONS**: La arquitectura es la que aguanta el peso del proyecto a largo plazo.
 - **AI IS A TOOL**: Vos sos Tony Stark. Vos decidís la arquitectura, la IA es el brazo que ejecuta.
