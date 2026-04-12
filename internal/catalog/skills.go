@@ -24,6 +24,23 @@ var mvpSkills = []Skill{
 	// Foundation skills
 	{ID: model.SkillGoTesting, Name: "go-testing", Category: "testing", Priority: "p0"},
 	{ID: model.SkillCreator, Name: "skill-creator", Category: "workflow", Priority: "p0"},
+	{ID: model.SkillDistiller, Name: "gentleman-distiller", Category: "maintenance", Priority: "p0"},
+	{ID: model.SkillContextGuardian, Name: "context-guardian", Category: "context", Priority: "p0"},
+	{ID: model.SkillGoReviewer, Name: "go-reviewer", Category: "quality", Priority: "p0"},
+	{ID: model.SkillTSReviewer, Name: "typescript-reviewer", Category: "quality", Priority: "p0"},
+	{ID: model.SkillDriver, Name: "gentleman-driver", Category: "autonomy", Priority: "p0"},
+	{ID: model.SkillLearn, Name: "instinct-learning", Category: "intelligence", Priority: "p0"},
+	{ID: model.SkillSentinel, Name: "gentleman-sentinel", Category: "maintenance", Priority: "p0"},
+	{ID: model.SkillStoryteller, Name: "gentleman-storyteller", Category: "intelligence", Priority: "p0"},
+	{ID: model.SkillCoach, Name: "gentleman-coach", Category: "intelligence", Priority: "p0"},
+	{ID: model.SkillBriefing, Name: "gentleman-briefing", Category: "maintenance", Priority: "p0"},
+	{ID: model.SkillPlan, Name: "gentleman-plan", Category: "maintenance", Priority: "p0"},
+	{ID: model.SkillJudge, Name: "judgment-day", Category: "quality", Priority: "p0"},
+	{ID: model.SkillBlueprint, Name: "gentleman-blueprint", Category: "maintenance", Priority: "p0"},
+	{ID: model.SkillRefactor, Name: "instinct-refactor", Category: "maintenance", Priority: "p0"},
+	{ID: model.SkillPRFix, Name: "pr-fix", Category: "automation", Priority: "p0"},
+	{ID: model.SkillConsole, Name: "gentleman-console", Category: "intelligence", Priority: "p0"},
+	{ID: model.SkillSync, Name: "fleet-sync", Category: "maintenance", Priority: "p0"},
 }
 
 func MVPSkills() []Skill {

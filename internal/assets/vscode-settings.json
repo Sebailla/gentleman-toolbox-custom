@@ -1,0 +1,21 @@
+{
+  "explorer.exclude": {
+    "**/.agent": true,
+    "**/.gga": true,
+    "**/node_modules": true,
+    "**/plans": false,
+    "**/specs": false,
+    "**/.docs": false
+  },
+  "files.associations": {
+    "*.md": "markdown"
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "search.exclude": {
+    "**/.gentleman": true,
+    "**/.agent": true
+  }
+}

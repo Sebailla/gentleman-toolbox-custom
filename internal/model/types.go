@@ -58,6 +58,23 @@ const (
 	SkillDjangoDRF  SkillID = "django-drf"
 	SkillGoTesting  SkillID = "go-testing"
 	SkillCreator    SkillID = "skill-creator"
+	SkillDistiller       SkillID = "gentleman-distiller"
+	SkillContextGuardian SkillID = "context-guardian"
+	SkillGoReviewer      SkillID = "go-reviewer"
+	SkillTSReviewer      SkillID = "typescript-reviewer"
+	SkillDriver          SkillID = "gentleman-driver"
+	SkillLearn           SkillID = "instinct-learning"
+	SkillSentinel        SkillID = "gentleman-sentinel"
+	SkillStoryteller      SkillID = "gentleman-storyteller"
+	SkillCoach           SkillID = "gentleman-coach"
+	SkillBriefing        SkillID = "gentleman-briefing"
+	SkillPlan            SkillID = "gentleman-plan"
+	SkillJudge           SkillID = "judgment-day"
+	SkillBlueprint       SkillID = "gentleman-blueprint"
+	SkillRefactor        SkillID = "instinct-refactor"
+	SkillPRFix           SkillID = "pr-fix"
+	SkillConsole         SkillID = "gentleman-console"
+	SkillSync            SkillID = "fleet-sync"
 )
 
 type PersonaID string

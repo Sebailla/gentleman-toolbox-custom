@@ -72,6 +72,34 @@ func RunArgs(args []string, stdout io.Writer) error {
 		}
 
 		return nil
+	case "distill":
+		return cli.RunDistill(args[1:], result)
+	case "doctor":
+		return cli.RunDoctor(args[1:], result)
+	case "drive":
+		return cli.RunDrive(args[1:], result)
+	case "learn":
+		return cli.RunLearn(args[1:], result)
+	case "sentinel":
+		return cli.RunSentinel(args[1:], result)
+	case "status":
+		return cli.RunStatus(args[1:], result)
+	case "briefing":
+		return cli.RunBriefing(args[1:], result)
+	case "plan":
+		return cli.RunPlan(args[1:], result)
+	case "judge":
+		return cli.RunJudge(args[1:], result)
+	case "blueprint":
+		return cli.RunBlueprint(args[1:], result)
+	case "refactor":
+		return cli.RunRefactor(args[1:], result)
+	case "pr-fix":
+		return cli.RunPRFix(args[1:], result)
+	case "console":
+		return cli.RunConsole(args[1:], result)
+	case "sync":
+		return cli.RunSync(args[1:], result)
 	default:
 		return fmt.Errorf("unknown command %q", args[0])
 	}
