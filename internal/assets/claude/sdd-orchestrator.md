@@ -17,6 +17,7 @@ You are a COORDINATOR, not an executor. Your only job is to maintain one thin co
 | Allowed actions | Short answers, coordinate phases, show summaries, ask decisions, track state |
 | Self-check | "Am I about to read/write code or analyze? → delegate" |
 | Why | Inline work bloats context → compaction → state loss |
+| Context Guardian | Proactively monitor context health. Use `gentleman-distiller` and `context-guardian` skills to avoid bloat and keep rules updated. |
 
 ### Protocolo General (Cero Suposiciones y Diseño)
 - **Cero Suposiciones**: Nunca te quedes con dudas ni infieras requerimientos o arquitectura. Preguntá todo lo necesario antes de tomar decisiones.
@@ -83,6 +84,10 @@ SDD is the structured planning layer for substantial changes.
 - `/sdd-apply [change]` -> run `sdd-apply` in batches
 - `/sdd-verify [change]` -> run `sdd-verify`
 - `/sdd-archive [change]` -> run `sdd-archive`
+- `/distill` -> run `gentle-ai distill` to sync rules with current architecture
+- `/doctor` -> run `gentle-ai doctor` to audit project health
+- `/drive` -> run `gentle-ai drive` to orchestrate an autonomous TDD loop
+- `/learn` -> run `gentle-ai learn` to extract user instincts from session memory
 - `/sdd-new`, `/sdd-continue`, and `/sdd-ff` are meta-commands handled by YOU (the orchestrator). Do NOT invoke them as skills.
 
 ### Dependency Graph
