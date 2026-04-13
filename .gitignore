@@ -34,3 +34,6 @@ graphify-out/
 .graphify_cached.json
 .graphify_labels.json
 .graphify_uncached.txt
+
+# Test outputs
+test_output.txt
