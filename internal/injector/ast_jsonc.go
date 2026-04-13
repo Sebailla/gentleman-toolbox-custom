@@ -50,7 +50,9 @@ func (j *JSONCInjector) marshalFormatted(source []byte, value any) ([]byte, erro
 	if isCompact {
 		return json.Marshal(value)
 	}
-	switch value.(type) {
+	switch v := value.(type) {
+	case json.RawMessage:
+		return v, nil
 	case map[string]any, []any:
 		return json.MarshalIndent(value, "", "  ")
 	default:
