@@ -304,10 +304,10 @@ El búnker está vivo. Podés usar estos comandos para acelerar:
 
 | Comando | Acción |
 | :--- | :--- |
-| \`gentle-ai status --score\` | Mide tu salud arquitectónica (AHI). |
-| \`gentle-ai plan --feature="X"\` | Genera el scaffolding de una nueva feature. |
-| \`gentle-ai drive --test="X"\` | Inicia el loop de TDD autónomo. |
-| \`gentle-ai briefing\` | Prepara el reporte de traspaso. |
+| \`sai status --score\` | Mide tu salud arquitectónica (AHI). |
+| \`sai plan --feature="X"\` | Genera el scaffolding de una nueva feature. |
+| \`sai drive --test="X"\` | Inicia el loop de TDD autónomo. |
+| \`sai briefing\` | Prepara el reporte de traspaso. |
 
 ## 🛡️ Gobernanza
 - **Git Hooks**: El **Centinela** valida cada commit. No se permiten ramas fuera de estándar ni cambios que rompan la salud del proyecto.
@@ -470,10 +470,15 @@ bunx lint-staged
 gga run
 EOF_PRECOMMIT
 
-    # Instalar el Centinela (Gentle AI Git Hooks)
-    if command -v gentle-ai &>/dev/null; then
+    # Instalar el Centinela (SAI Git Hooks)
+    if command -v sai &>/dev/null; then
         log_info "Activando el Centinela (Pre-commit Health Check)..."
+        sai sentinel install
+    elif command -v gentle-ai &>/dev/null; then
+        log_info "Activando el Centinela via gentle-ai (fallback)..."
         gentle-ai sentinel install
+    else
+        log_warn "SAI no encontrado. Instalá SAI Stack con install-sai.sh para activar el Centinela."
     fi
 }
 
@@ -486,11 +491,10 @@ npm pkg set scripts.db:seed="tsx prisma/seed.ts"
 npm pkg set scripts.db:reset="prisma migrate reset --force && bun run db:seed"
 npm pkg set scripts.release="standard-version"
 
-# 12. Inyectar inteligencia (Gentle AI Skills & Ecosystem)
-log_info "Configurando ecosistema Gentle AI (Skills, Engram, Persona)..."
-if command -v gentle-ai &>/dev/null; then
-    # Instalamos/Actualizamos globalmente para asegurar que existen
-    gentle-ai install --agent opencode --preset full-gentleman
+# 12. Inyectar inteligencia (SAI Skills & Ecosystem)
+log_info "Configurando ecosistema SAI (Skills, Engram, Persona)..."
+if command -v sai &>/dev/null; then
+    sai install --agent opencode --preset full-gentleman
     
     # Copiamos los skills al proyecto para que el agente los vea localmente
     SKILLS_SOURCE="$HOME/.config/opencode/skills"
@@ -498,10 +502,13 @@ if command -v gentle-ai &>/dev/null; then
         log_info "Copiando skills desde $SKILLS_SOURCE..."
         cp -r "$SKILLS_SOURCE/"* .agent/skills/
     else
-        log_warn "No se encontraron skills en $SKILLS_SOURCE. Corré 'gentle-ai install' manualmente."
+        log_warn "No se encontraron skills en $SKILLS_SOURCE. Corré 'sai install' manualmente."
     fi
+elif command -v gentle-ai &>/dev/null; then
+    log_warn "SAI no encontrado, usando gentle-ai como fallback..."
+    gentle-ai install --agent opencode --preset full-gentleman
 else
-    log_warn "gentle-ai no encontrado. Corré 'gentle-ai install' manualmente."
+    log_warn "SAI ni gentle-ai encontrado. Corré './install-sai.sh' para instalar SAI Stack."
 fi
 
 # 12b. Instalar Graphify (Opcional)
@@ -618,10 +625,14 @@ echo "  2. bun install"
 echo "  3. Empezá una tarea con: git checkout -b feat/nombre-tarea"
 
 # 15. Diagnóstico y Reparación Final
-if command -v gentle-ai &>/dev/null; then
+if command -v sai &>/dev/null; then
     log_info "Corriendo diagnóstico y reparación proactiva del búnker..."
-    gentle-ai doctor --fix
+    sai doctor --fix
     log_info "Optimizando contexto inicial (Distill)..."
+    sai distill
+elif command -v gentle-ai &>/dev/null; then
+    log_info "Diagnóstico via gentle-ai (fallback)..."
+    gentle-ai doctor --fix
     gentle-ai distill
 fi
 

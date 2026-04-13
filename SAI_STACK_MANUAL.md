@@ -1,6 +1,6 @@
-# 🎭 El Gentleman Stack - Manual de Operaciones 2026
+# 🎭 El SAI Stack - Manual de Operaciones 2026
 
-Este manual define el flujo de trabajo sagrado para construir software de alta calidad usando el ecosistema **Gentle AI**, **OpenCode** y el **Gentleman Stack**. No es solo código, es **disciplina arquitectónica**.
+Este manual define el flujo de trabajo sagrado para construir software de alta calidad usando el ecosistema **SAI (Seba AI)**, **Gentle AI**, **OpenCode** y el **SAI Stack**. No es solo código, es **disciplina arquitectónica**.
 
 ---
 
@@ -9,7 +9,7 @@ Este manual define el flujo de trabajo sagrado para construir software de alta c
 Para cada nuevo proyecto, no pierdas tiempo configurando carpetas. El script maestro ya lo hace por vos con **Next.js 15, Prisma 7, Tailwind v4 y SDD Skills**.
 
 ```bash
-/Users/sebailla/Documents/Proyectos/gentleman-toolbox/init-project.sh nombre-de-tu-app
+init-project nombre-de-tu-app
 ```
 
 **Qué incluye el búnker:**
@@ -122,24 +122,26 @@ Estas capacidades permiten el flujo de **Spec-Driven Development**.
 Estas son las nuevas capacidades integradas para un búnker inteligente.
 
 #### 🕹️ Comandos CLI (Explícitos)
-Correlos en tu terminal o pedile a la IA que los ejecute.
+Correlos en tu terminal o pedile a la IA que los ejecute. Usamos **`sai`** como punto de entrada inteligente (Overlay CLI) que protege tus comandos personalizados.
 
 | Comando | Descripción | Cuándo usarlo |
 | :--- | :--- | :--- |
-| `gentle-ai distill` | Filtra el contexto del proyecto. | Al inicio de sesión. |
-| `gentle-ai doctor --fix` | Diagnostica y repara el búnker. | Si algo falla o faltan reglas. |
-| `gentle-ai drive --test="X"` | Inicia loop autónomo de corrección. | Si un test no pasa. |
-| `gentle-ai learn` | Extrae instintos de la sesión. | Al terminar tu día. |
-| `gentle-ai sentinel install` | Activa el Centinela (Pre-commit). | En cada nuevo repo. |
-| `gentle-ai status --score` | Calcula el AHI (Salud Arquitectónica). | Para medir deuda técnica. |
-| `gentle-ai briefing` | Genera reporte de traspaso. | Para cambiar de agente/sesión. |
-| `gentle-ai plan --feature="X"` | Genera scaffolding modular. | Para empezar un módulo nuevo. |
-| `gentle-ai judge <target>` | Inicia el Juicio Adversario. | Antes de un merge crítico. |
-| `gentle-ai blueprint` | Genera mapa de dependencias. | Para auditar el acoplamiento. |
-| `gentle-ai refactor --instincts` | Aplica tus gustos al código viejo. | Para evitar la podredumbre técnica. |
-| `gentle-ai pr-fix <url>` | Corrige comentarios de PR. | Para automatizar el feedback de GitHub. |
-| `gentle-ai console` | Lanza el dashboard interactivo. | Para gestión visual del búnker. |
-| `gentle-ai sync` | Sincroniza tácticas globales. | Para mantener el búnker actualizado. |
+| `sai distill` | Filtra el contexto del proyecto. | Al inicio de sesión. |
+| `sai doctor --fix` | Diagnostica y repara el búnker. | Si algo falla o faltan reglas. |
+| `sai drive --test="X"` | Inicia loop autónomo de corrección. | Si un test no pasa. |
+| `sai learn` | Extrae instintos de la sesión. | Al terminar tu día. |
+| `sai sentinel install` | Activa el Centinela (Pre-commit). | En cada nuevo repo. |
+| `sai status --score` | Calcula el AHI (Salud Arquitectónica). | Para medir deuda técnica. |
+| `sai briefing` | Genera reporte de traspaso. | Para cambiar de agente/sesión. |
+| `sai plan --feature="X"` | Genera scaffolding modular. | Para empezar un módulo nuevo. |
+| `sai judge <target>` | Inicia el Juicio Adversario. | Antes de un merge crítico. |
+| `sai blueprint` | Genera mapa de dependencias. | Para auditar el acoplamiento. |
+| `sai refactor --instincts` | Aplica tus gustos al código viejo. | Para evitar la podredumbre técnica. |
+| `sai pr-fix <url>` | Corrige comentarios de PR. | Para automatizar el feedback de GitHub. |
+| `sai console` | Lanza el dashboard interactivo. | Para gestión visual del búnker. |
+| `sai sync` | Sincroniza tácticas globales. | Para mantener el búnker actualizado. |
+| `sai update` | Busca actualizaciones de herramientas. | Semanalmente. |
+| `sai upgrade` | Realiza el upgrade de binarios oficiales. | Cuando hay updates de Alan. |
 
 #### 🧠 Skills de Contexto (Implícitos)
 La IA los carga automáticamente según la necesidad. No necesitás invocarlos, están ahí para protegerte.
@@ -286,8 +288,9 @@ cp -r ~/.config/opencode/skills/* .agent/skills/
 
 ### Actualizar el Ecosistema
 ```bash
-# Actualiza las herramientas globales (gentle-ai, engram, gga)
-gentle-ai install --agent opencode --preset full-gentleman
+# Sincroniza los skills globales del sistema al proyecto.
+# RECOMENDADO: Usar 'sai' para asegurar que se utilicen tus comandos.
+sai install --agent opencode --preset full-gentleman
 ```
 
 ### Gestión de MCP (Model Context Protocol)

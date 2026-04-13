@@ -37,3 +37,4 @@ graphify-out/
 
 # Test outputs
 test_output.txt
+bin/
