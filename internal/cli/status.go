@@ -60,7 +60,7 @@ func RunStatus(args []string, detection system.DetectionResult) error {
 		if len(missing) == 0 {
 			perfectModules++
 		} else if scoreMode {
-			issues = append(issues, fmt.Printf("  ❌ Módulo [%s]: Faltan %v\n", moduleName, missing).(string))
+			issues = append(issues, fmt.Sprintf("  ❌ Módulo [%s]: Faltan %v\n", moduleName, missing))
 		}
 	}
 

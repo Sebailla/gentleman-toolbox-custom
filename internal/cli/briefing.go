@@ -14,7 +14,7 @@ func RunBriefing(args []string, detection system.DetectionResult) error {
 	fmt.Println("🎖️  Gentleman Briefing - Generando Mission Handover")
 	fmt.Println("================================================")
 
-	cwd, err := os.Getwd()
+	_, err := os.Getwd()
 	if err != nil {
 		return err
 	}

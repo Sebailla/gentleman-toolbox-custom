@@ -26,17 +26,17 @@ var (
 	styleCyan    = lipgloss.NewStyle().Foreground(lipgloss.Color("#00FFFF"))
 )
 
-type model struct {
+type consoleModel struct {
 	project string
 	score   int
 	status  string
 }
 
-func (m model) Init() tea.Cmd {
+func (m consoleModel) Init() tea.Cmd {
 	return nil
 }
 
-func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m consoleModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
@@ -51,7 +51,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-func (m model) View() string {
+func (m consoleModel) View() string {
 	var s strings.Builder
 
 	s.WriteString(styleTitle.Render(" GENTLEMAN AI CONSOLE "))
@@ -69,7 +69,7 @@ func (m model) View() string {
 
 // RunConsole inicia la interfaz interactiva de terminal.
 func RunConsole(args []string, detection system.DetectionResult) error {
-	p := tea.NewProgram(model{
+	p := tea.NewProgram(consoleModel{
 		project: "gentleman-toolbox", // Debería extraerse dinámicamente
 		score:   85,                  // Debería calcularse dinámicamente
 		status:  "LISTO PARA LA GUERRA",

@@ -634,9 +634,13 @@ func TestInjectOpenCodeSingleToMultiSwitch(t *testing.T) {
 	// Second: inject multi mode.
 	result, err := Inject(home, opencodeAdapter(), "multi")
 	if err != nil {
+		content, _ := os.ReadFile(settingsPath)
+		fmt.Printf("\n--- DEBUG: opencode.json content on error ---\n%s\n------------------------------------------\n", string(content))
 		t.Fatalf("Inject(multi) error = %v", err)
 	}
 	if !result.Changed {
+		content, _ := os.ReadFile(settingsPath)
+		fmt.Printf("\n--- DEBUG: opencode.json content on no change ---\n%s\n----------------------------------------------\n", string(content))
 		t.Fatal("switching from single to multi should produce changed=true")
 	}
 

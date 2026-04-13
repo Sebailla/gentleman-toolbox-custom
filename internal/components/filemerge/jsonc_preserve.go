@@ -51,7 +51,7 @@ func mergeRecursivePreserving(inj *injector.JSONCInjector, base []byte, overlay 
 						// Only inject if the sub-object actually changed semantically.
 						// This helps with idempotency when formatting differs.
 						if !bytes.Equal(updatedSub, subObj) {
-							updated, err := inj.Inject(current, k, updatedSub)
+							updated, err := inj.Inject(current, k, json.RawMessage(updatedSub))
 							if err == nil {
 								current = updated
 								continue

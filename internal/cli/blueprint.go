@@ -73,7 +73,7 @@ func RunBlueprint(args []string, detection system.DetectionResult) error {
 		}
 	}
 
-	fmt.Println("\n📐 Diagrama Mermaid Generado:\n")
+	fmt.Println("\n📐 Diagrama Mermaid Generado:")
 	fmt.Println("```mermaid")
 	fmt.Println(mermaid)
 	fmt.Println("```")
