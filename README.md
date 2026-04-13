@@ -7,12 +7,31 @@ Este búnker está configurado para recibir lo último de Alan pero guardar tus 
 - **`origin`**: Tu repositorio personal (`gentleman-toolbox-custom`).
 - **`upstream`**: El repositorio original de Alan (`gentle-ai`).
 
-### 🚀 Paso 1: Inicialización
-Cada vez que quieras empezar algo nuevo con todo el stack, corré el script maestro. Nota: el script solo verifica actualizaciones contra tu repo personal (`origin`) para proteger tus customizaciones:
+### 🚀 Paso 1: Instalación de SAI
+
+Para tener el control total de tu búnker y protegerte de actualizaciones que puedan romper tus personalizaciones, usamos **SAI (Seba AI)** como punto de entrada inteligente.
+
+1. **Compilar e Instalar**:
+   ```bash
+   cd /Users/sebailla/Documents/Proyectos/gentleman-toolbox
+   chmod +x install-sai.sh
+   ./install-sai.sh
+   ```
+2. **Crear el acceso global** (Recomendado):
+   ```bash
+   sudo ln -sf "$(pwd)/bin/sai" /usr/local/bin/sai
+   ```
+
+Una vez instalado, usá siempre `sai` en lugar de `gentle-ai`.
+
+### 🏗️ Paso 2: Inicialización de Proyectos
+Cada vez que quieras empezar algo nuevo, corré el inicializador desde **cualquier carpeta** de tu sistema:
 
 ```bash
-/Users/sebailla/Documents/Proyectos/gentleman-toolbox/init-project.sh nombre-del-proyecto
+init-project nombre-del-proyecto
 ```
+
+> `init-project` se instala globál junto con `sai` cuando corremos el `install-sai.sh`. No hay que recordar rutas absolutas.
 
 ### 🔄 Paso 1.5: ¿Cómo actualizar con novedades de Alan? (Manual)
 Como tenemos un Toolbox super personalizado con el "Pibe Stack" (Stitch, idioma Rioplatense, automatización de specs), las actualizaciones de Alan (`upstream`) ahora se bajan a mano para que nada se rompa por accidente. 
@@ -64,10 +83,13 @@ gga run
 *Si no detecta cambios, hacé un pequeño cambio en cualquier archivo y probá de nuevo.*
 
 ### 4. Sincronizar Skills & Ecosistema (Opcional si falló el script)
-Si por alguna razón el script no inyectó los skills de SDD, forzalo así:
+Si por alguna razón el script no inyectó los skills de SDD, forzalo usando el overlay:
 ```bash
-gentle-ai install --agent opencode --preset full-gentleman
+sai install --agent opencode --preset full-gentleman
 ```
+
+---
+Para más detalles sobre cada comando y la arquitectura del stack, consulta el [SAI_STACK_MANUAL.md](file:///Users/sebailla/Documents/Proyectos/gentleman-toolbox/SAI_STACK_MANUAL.md).
 
 ## 📦 El Stack Incluido:
 - **Next.js 16** (Arquitectura Modular / Feature-Sliced Design estricta con App Router).
