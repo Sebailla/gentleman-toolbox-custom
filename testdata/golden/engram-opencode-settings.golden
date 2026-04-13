@@ -1,3 +1,1 @@
-{
-  "mcp": {"engram":{"command":["engram","mcp"],"enabled":true,"type":"local"}}
-}
+{"mcp": {"engram":{"command":["engram","mcp"],"enabled":true,"type":"local"}}}
